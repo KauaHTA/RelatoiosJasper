@@ -1,0 +1,232 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="DetalheMotivoMorte" language="java" columnCount="1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="956efac9-299a-4432-9a7b-0e5036afdb2b">
+	<property name="com.jaspersoft.studio.data.sql.tables" value="eGdwX2FuaW1hbCAsMjA4LDE1LGNkMjU4Njk0LTQ1MDItNDA5OS04MjUxLTNlMTRlM2Y0NjQ0NDtl&#xa;bXByZXNhICwxNSw1ODAsMGEyMzZmMmQtZTIzNS00MWYwLWFkMDItMjYwYjczNzdkODY3O3hncF9t&#xa;b3Rpdm9fbW9ydGUgLDM5MSw1NDIsNTU0MTZkZTEtYzNkYi00Y2E2LTgxNTEtMzk5N2ZhYWE5MDFk&#xa;O3hncF9jYXRlZ29yaWEgLDM5MSw3ODgsZGRjMWY2ZDUtYzgwYS00YmUwLWEyYWUtZDBiNDJmYWY4&#xa;YjExOw=="/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<dataset name="Dataset_nome" uuid="ac557a28-94f0-4bfd-9762-db5812533d4a">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="FazendaGT"/>
+		<parameter name="id_empresa" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[$F{id_empresa}]]></defaultValueExpression>
+		</parameter>
+		<query language="SQL"><![CDATA[SELECT nome,
+	id_empresa
+FROM empresa
+WHERE 
+	 empresa.id_empresa = $P{id_empresa}]]></query>
+		<field name="nome" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="nome"/>
+			<property name="com.jaspersoft.studio.field.label" value="nome"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="empresa"/>
+		</field>
+		<field name="id_empresa" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.name" value="id_empresa"/>
+			<property name="com.jaspersoft.studio.field.label" value="id_empresa"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="empresa"/>
+		</field>
+	</dataset>
+	<parameter name="data_inicial" class="java.sql.Date"/>
+	<parameter name="data_final" class="java.sql.Date"/>
+	<parameter name="id_empresa" class="java.lang.Integer"/>
+	<query language="SQL"><![CDATA[SELECT c.descricao AS categoria,
+	b.descricao AS motivo_morte,
+	COUNT(*) AS qtde,
+	c.sexo
+FROM xgp_animal a
+	JOIN xgp_motivo_morte b ON 
+	 a.id_motivo_morte = b.id_motivo_morte 
+	JOIN xgp_categoria c ON 
+	 a.id_categoria = c.id_categoria 
+	join empresa ps ON 
+	 ps.id_empresa = a.id_empresa 
+WHERE 
+	 ps.id_empresa = $P{id_empresa} 
+	 AND a.data_saida >= $P{data_inicial} 
+	 AND a.data_saida <= $P{data_final} 
+GROUP BY c.descricao,
+	b.descricao,
+	c.sexo
+ORDER BY c.descricao ASC,
+	b.descricao ASC,
+	c.sexo ASC]]></query>
+	<field name="categoria" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="categoria"/>
+		<property name="com.jaspersoft.studio.field.label" value="categoria"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_categoria"/>
+	</field>
+	<field name="motivo_morte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="motivo_morte"/>
+		<property name="com.jaspersoft.studio.field.label" value="motivo_morte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_motivo_morte"/>
+	</field>
+	<field name="qtde" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="qtde"/>
+		<property name="com.jaspersoft.studio.field.label" value="qtde"/>
+	</field>
+	<field name="sexo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="sexo"/>
+		<property name="com.jaspersoft.studio.field.label" value="sexo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_categoria"/>
+	</field>
+	<variable name="qtde1" calculation="Sum" class="java.lang.Long">
+		<expression><![CDATA[$F{qtde}]]></expression>
+	</variable>
+	<variable name="morteF" calculation="Sum" class="java.lang.Long">
+		<expression><![CDATA[$F{sexo}.equals("F") ? $F{qtde} : 0]]></expression>
+	</variable>
+	<variable name="morteM" calculation="Sum" class="java.lang.Long">
+		<expression><![CDATA[$F{sexo}.equals("M") ? $F{qtde} : 0]]></expression>
+	</variable>
+	<variable name="morteT" calculation="Sum" class="java.lang.Long">
+		<expression><![CDATA[$F{sexo}.equals("I") ? $F{qtde} : 0]]></expression>
+	</variable>
+	<title height="35" splitType="Stretch">
+		<element kind="staticText" uuid="5542ee3b-8ed6-475a-a1ca-f6737e009159" x="120" y="0" width="306" height="28" fontSize="15.0" bold="true">
+			<text><![CDATA[Baixa de Animais por Categoria e Motivo]]></text>
+		</element>
+		<element kind="textField" uuid="84bba43d-9c28-4375-800d-9094a3a0b680" x="487" y="16" width="52" height="15" fontSize="7.0" pattern="#,#00.###;(#,#00.###-)" bold="false">
+			<expression><![CDATA[$V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="staticText" uuid="d47cf99c-c6b3-48e3-b0ef-9af40d81155b" x="452" y="16" width="56" height="15" fontSize="7.0" bold="true">
+			<text><![CDATA[PÁGINA:]]></text>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="textField" uuid="c903cab6-57bb-483b-ac78-a9a76e0aef5a" x="487" y="3" width="72" height="19" fontSize="7.0" pattern="dd/MM/yyyy h:mm" hTextAlign="Left">
+			<expression><![CDATA[new java.util.Date()]]></expression>
+		</element>
+		<element kind="staticText" uuid="7c3da7fc-b33f-4ffa-a3f0-1bfb46c2609a" x="452" y="3" width="84" height="19" fontSize="7.0" bold="true">
+			<text><![CDATA[EMISSÃO:]]></text>
+		</element>
+	</title>
+	<pageHeader height="35" splitType="Stretch">
+		<element kind="textField" uuid="2898b1d6-f01b-4279-b6d3-e13574b22382" x="531" y="2" width="26" height="12" fontSize="7.0" pattern="#,#00.###;(#,#00.###-)">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}.intValue() > 1
+]]></printWhenExpression>
+			<expression><![CDATA[$V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="staticText" uuid="3c59e914-2ef9-4a77-b0f2-7d6f28780ac8" x="500" y="2" width="30" height="12" fontSize="7.0" bold="true">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}.intValue() > 1]]></printWhenExpression>
+			<text><![CDATA[PÁGINA:]]></text>
+		</element>
+		<element kind="component" uuid="2f3d3c59-4f68-46e0-82db-4aa2e854c4aa" x="51" y="14" width="119" height="16">
+			<component kind="table">
+				<datasetRun uuid="bda907cd-d34b-4636-86a5-fbebaa1b0a5a" subDataset="Dataset_nome">
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<parameter name="id_empresa">
+						<expression><![CDATA[$P{id_empresa}]]></expression>
+					</parameter>
+				</datasetRun>
+				<column kind="single" uuid="5d99e83e-7b63-4cb2-83e3-262d4ebb6582" width="200">
+					<detailCell height="30" style="Table_TD">
+						<element kind="textField" uuid="9ef29215-bb15-49f9-b669-4d13f2c91279" x="0" y="0" width="200" height="30" fontSize="9.0" vTextAlign="Middle">
+							<expression><![CDATA[$F{nome}]]></expression>
+						</element>
+					</detailCell>
+				</column>
+			</component>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+			<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+			<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+			<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+		</element>
+		<element kind="staticText" uuid="11fe9207-1ad9-4242-8b0a-8782d81209ed" x="0" y="18" width="100" height="17" fontSize="9.0" bold="true" vTextAlign="Bottom">
+			<text><![CDATA[EMPRESA:]]></text>
+		</element>
+		<element kind="textField" uuid="3b7d8c0d-013e-4f48-a634-b767575c7ef2" x="330" y="18" width="50" height="16" fontSize="9.0" evaluationTime="Report" pattern="#,#00.###;(#,#00.###-)" bold="false" vTextAlign="Bottom">
+			<expression><![CDATA[$V{morteF}]]></expression>
+		</element>
+		<element kind="textField" uuid="21c5dd7d-7be3-4f19-98fb-d23f28d51b69" x="232" y="18" width="100" height="16" fontSize="9.0" evaluationTime="Report" bold="false" vTextAlign="Bottom">
+			<expression><![CDATA[$V{morteM}]]></expression>
+		</element>
+		<element kind="staticText" uuid="d625ba2f-f03c-4488-b4c0-1e6ecf0101cd" x="195" y="18" width="46" height="16" fontSize="9.0" bold="true" vTextAlign="Bottom">
+			<text><![CDATA[MACHO:]]></text>
+		</element>
+		<element kind="staticText" uuid="967f52b1-6258-463c-88ae-e90dcdb5994c" x="295" y="18" width="40" height="16" fontSize="9.0" bold="true" vTextAlign="Bottom">
+			<text><![CDATA[FÊMEA:]]></text>
+		</element>
+		<element kind="staticText" uuid="d969b61d-1ead-4c6f-8923-8dbc4bf169e4" x="385" y="18" width="40" height="16" fontSize="9.0" bold="true" vTextAlign="Bottom">
+			<text><![CDATA[TROPA:]]></text>
+		</element>
+		<element kind="textField" uuid="f2e5d843-ce70-4a87-8b21-370f34d1beb2" x="421" y="18" width="66" height="16" fontSize="9.0" evaluationTime="Report" pattern="#,#00.###;(#,#00.###-)" blankWhenNull="true" vTextAlign="Bottom">
+			<expression><![CDATA[$V{morteT}]]></expression>
+		</element>
+		<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+		<property name="com.jaspersoft.studio.unit.height" value="px"/>
+	</pageHeader>
+	<columnHeader height="20" splitType="Stretch">
+		<element kind="staticText" uuid="7955bca1-1230-4359-bd41-7b3436b1db4f" x="0" y="0" width="108" height="14" forecolor="#030000" backcolor="#FFFFFF" bold="true" vTextAlign="Bottom">
+			<text><![CDATA[Categoria]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="79511be2-33da-4c42-ba4d-1ed487f8d74c"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="714eb41c-ceb6-405b-be7f-28f5ea9c247e" x="146" y="0" width="107" height="14" forecolor="#030000" backcolor="#FFFFFF" bold="true" vTextAlign="Bottom">
+			<text><![CDATA[Motivo]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="116ecb3c-0f2f-4fc4-b494-0b457709dade"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="2506ad03-ebd1-4b87-958b-e2c42298fef9" x="461" y="0" width="76" height="14" forecolor="#030000" backcolor="#FFFFFF" bold="true" vTextAlign="Bottom">
+			<text><![CDATA[Quantidade]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4f80ad1c-bd33-49e4-9cc0-cdb8a496b73e"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="line" uuid="c290e616-491d-4bb1-8e1a-5cb1633cd3c7" x="-50" y="18" width="1030" height="1"/>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<element kind="rectangle" uuid="a79e75a6-db8d-481d-873d-db3f08e6c3e8" x="-60" y="0" width="660" height="21" forecolor="rgba(0, 0, 0, 0.0)" backcolor="rgba(207, 207, 207, 0.6745098)">
+				<printWhenExpression><![CDATA[$V{REPORT_COUNT} % 2 != 0]]></printWhenExpression>
+			</element>
+			<element kind="textField" uuid="08b1a504-abd6-4137-906f-82d8bc30847c" x="0" y="2" width="108" height="15">
+				<expression><![CDATA[$F{categoria}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="79511be2-33da-4c42-ba4d-1ed487f8d74c"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="a62f1a6c-b472-4793-994b-1595395b595d" x="146" y="2" width="107" height="15">
+				<expression><![CDATA[$F{motivo_morte}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="116ecb3c-0f2f-4fc4-b494-0b457709dade"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="be4b8deb-fcb3-4e9b-891d-0134856affaa" x="462" y="2" width="53" height="15" pattern="#,#00.###;(#,#00.###-)" hTextAlign="Right">
+				<expression><![CDATA[$F{qtde}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4f80ad1c-bd33-49e4-9cc0-cdb8a496b73e"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+		</band>
+	</detail>
+	<summary height="27">
+		<element kind="textField" uuid="7f53fdf8-bf98-4e54-bff5-219a02f7729a" x="463" y="3" width="53" height="20" bold="true" hTextAlign="Right">
+			<expression><![CDATA[$V{qtde1}]]></expression>
+		</element>
+		<element kind="line" uuid="38ec092c-0901-4ef9-8a2a-c5d80a1ffda4" x="-20" y="-1" width="800" height="1">
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
+		</element>
+		<element kind="staticText" uuid="81edd6ef-7844-48b3-a39a-34040adedd8c" x="0" y="3" width="110" height="16" bold="true">
+			<text><![CDATA[Total de Animais]]></text>
+		</element>
+	</summary>
+</jasperReport>

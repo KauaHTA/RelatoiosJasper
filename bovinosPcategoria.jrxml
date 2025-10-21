@@ -1,0 +1,242 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="bovinosPcategoria" language="java" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6d4c1a59-242f-466d-916d-c0da136f5992">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="FazendaGT"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<dataset name="Datasetname" uuid="f1e86741-1b2b-473c-8ca6-ffd2cdd1f336">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="FazendaGT"/>
+		<parameter name="id_empresa" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[$F{id_empresa}]]></defaultValueExpression>
+		</parameter>
+		<query language="SQL"><![CDATA[SELECT nome,
+	id_empresa
+FROM empresa
+WHERE 
+	 empresa.id_empresa = $P{id_empresa}
+]]></query>
+		<field name="nome" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="nome"/>
+			<property name="com.jaspersoft.studio.field.label" value="nome"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="empresa"/>
+		</field>
+		<field name="id_empresa" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.name" value="id_empresa"/>
+			<property name="com.jaspersoft.studio.field.label" value="id_empresa"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="empresa"/>
+		</field>
+	</dataset>
+	<parameter name="id_empresa" class="java.lang.Integer"/>
+	<query language="SQL"><![CDATA[SELECT b.descricao AS categoria,
+       a.sexo,
+       COUNT(a.id_animal) AS qtde,
+       AVG(a.peso_atual) AS peso_medio,
+       SUM(a.peso_atual)/450 AS UA,
+       SUM(a.peso_atual)/30 AS Arroba
+FROM xgp_animal a
+JOIN xgp_categoria b ON a.id_categoria = b.id_categoria
+join empresa on empresa.id_empresa = a.id_empresa
+WHERE a.id_especie = 1
+  AND a.status = 'E'
+  AND empresa.id_empresa = $P{id_empresa}
+GROUP BY b.descricao, a.sexo
+ORDER BY a.sexo, b.descricao
+
+
+
+	 
+]]></query>
+	<field name="categoria" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="categoria"/>
+		<property name="com.jaspersoft.studio.field.label" value="categoria"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_categoria"/>
+	</field>
+	<field name="sexo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="sexo"/>
+		<property name="com.jaspersoft.studio.field.label" value="sexo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_animal"/>
+	</field>
+	<field name="qtde" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="qtde"/>
+		<property name="com.jaspersoft.studio.field.label" value="qtde"/>
+	</field>
+	<field name="peso_medio" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="peso_medio"/>
+		<property name="com.jaspersoft.studio.field.label" value="peso_medio"/>
+	</field>
+	<field name="ua" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="ua"/>
+		<property name="com.jaspersoft.studio.field.label" value="ua"/>
+	</field>
+	<field name="arroba" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="arroba"/>
+		<property name="com.jaspersoft.studio.field.label" value="arroba"/>
+	</field>
+	<variable name="qtde1" calculation="Sum" class="java.lang.Long">
+		<expression><![CDATA[$F{qtde}]]></expression>
+	</variable>
+	<variable name="peso_medio1" calculation="Average" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{peso_medio}]]></expression>
+	</variable>
+	<variable name="ua1" calculation="Average" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{ua}]]></expression>
+	</variable>
+	<variable name="arroba1" calculation="Sum" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{arroba}]]></expression>
+	</variable>
+	<group name="sexo">
+		<expression><![CDATA[$F{sexo}]]></expression>
+	</group>
+	<group name="Groupsexo">
+		<expression><![CDATA[$F{sexo}]]></expression>
+	</group>
+	<background splitType="Stretch"/>
+	<title height="69" splitType="Stretch">
+		<element kind="staticText" uuid="f4033561-1cb5-4175-a690-3715be4cbbf8" x="270" y="0" width="250" height="50" fontSize="21.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[Bovinos por Categoria ]]></text>
+		</element>
+		<element kind="staticText" uuid="45ae62c8-ec0a-4c0d-9c3b-570eab2c444a" x="672" y="5" width="70" height="20" fontSize="7.0" bold="true">
+			<text><![CDATA[EMISSÃO:]]></text>
+		</element>
+		<element kind="staticText" uuid="8b1c39ec-2d99-496f-821f-f40db054369e" x="672" y="19" width="70" height="20" fontSize="7.0" bold="true">
+			<text><![CDATA[PÁGINA:]]></text>
+		</element>
+		<element kind="textField" uuid="8d17879e-c9ea-4e2c-9f2d-06a2a8e79fd9" x="707" y="5" width="80" height="20" fontSize="7.0" pattern="dd/MM/yyyy HH:mm">
+			<expression><![CDATA[new java.util.Date()]]></expression>
+		</element>
+		<element kind="textField" uuid="e7bee2ce-c52c-4d04-b4d5-972794eb5ce1" x="707" y="19" width="80" height="20" fontSize="7.0">
+			<expression><![CDATA[$V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="component" uuid="2ed7822e-5af6-4de4-b362-a9d7563bb994" x="54" y="39" width="122" height="25">
+			<component kind="table">
+				<datasetRun uuid="bc33e855-3f7b-48e5-8b5e-6fcf7fb8b0d7" subDataset="Datasetname">
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<parameter name="id_empresa">
+						<expression><![CDATA[$P{id_empresa}]]></expression>
+					</parameter>
+				</datasetRun>
+				<column kind="single" uuid="77616e22-8b44-4a4b-acf5-241efe7aefb8" width="200">
+					<detailCell height="30" style="Table_TD">
+						<element kind="textField" uuid="52f6d487-6bb6-474e-abb8-d88f8d1c3dba" x="0" y="0" width="200" height="30" fontSize="11.0">
+							<expression><![CDATA[$F{nome}]]></expression>
+						</element>
+					</detailCell>
+				</column>
+			</component>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+			<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+			<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+			<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+		</element>
+		<element kind="staticText" uuid="a4ddd8ad-082c-469c-a45f-0a1971e8b0ae" x="0" y="39" width="100" height="24" bold="true">
+			<text><![CDATA[EMPRESA:]]></text>
+		</element>
+	</title>
+	<pageHeader height="29">
+		<element kind="rectangle" uuid="ff21767b-fe27-4e2b-abd4-b3f585dd7c84" x="-30" y="3" width="870" height="23" forecolor="rgba(0, 0, 0, 0.0)" backcolor="rgba(207, 207, 207, 0.6745098)"/>
+		<element kind="textField" uuid="503b671e-7843-41ba-9351-97e55bae4055" x="60" y="3" width="52" height="18" evaluationTime="Report" pattern="#,##0.###;(#,##0.###-)" bold="false" hTextAlign="Left" vTextAlign="Middle">
+			<expression><![CDATA[$V{qtde1}]]></expression>
+		</element>
+		<element kind="textField" uuid="2ba56933-ba38-400c-95bd-ffad3f7a3d45" x="289" y="3" width="62" height="20" evaluationTime="Report" pattern="#,#00.00" bold="false" hTextAlign="Left" vTextAlign="Middle">
+			<expression><![CDATA[$V{peso_medio1}]]></expression>
+		</element>
+		<element kind="textField" uuid="5988620e-2eba-4688-a98d-074638197bfa" x="498" y="3" width="62" height="20" evaluationTime="Report" pattern="#,#00.00" bold="false" hTextAlign="Left" vTextAlign="Middle">
+			<expression><![CDATA[$V{ua1}]]></expression>
+		</element>
+		<element kind="textField" uuid="9e887a6a-dd33-49e9-82f1-30f79107fca0" x="709" y="3" width="72" height="19" evaluationTime="Report" pattern="#,#00.00" bold="false" hTextAlign="Left" vTextAlign="Middle">
+			<expression><![CDATA[$V{arroba1}]]></expression>
+		</element>
+		<element kind="staticText" uuid="720b9d1f-566b-4eec-817a-f335c3f40af9" x="1" y="3" width="80" height="18" fontSize="10.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<text><![CDATA[Quantidade:]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="40c08313-40ca-421a-b976-116c34e5b131"/>
+		</element>
+		<element kind="staticText" uuid="f01cd2de-f09a-4042-bed4-adea90baf223" x="209" y="3" width="78" height="20" fontSize="10.0" bold="true" hTextAlign="Right" vTextAlign="Middle">
+			<text><![CDATA[Média de Peso: ]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="52a36169-40de-4ced-a993-121b23e197b4"/>
+		</element>
+		<element kind="staticText" uuid="d2c3ea0e-2ecb-4a43-9a0f-63ac98b2da97" x="429" y="3" width="68" height="20" fontSize="10.0" bold="true" hTextAlign="Right" vTextAlign="Middle">
+			<text><![CDATA[Média UA:]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a6389045-ed9c-4efd-9ae8-eeb5cec6010d"/>
+		</element>
+		<element kind="staticText" uuid="75e7ae0d-c00a-4d27-b672-9331d6320082" x="610" y="3" width="98" height="19" fontSize="10.0" bold="true" hTextAlign="Right" vTextAlign="Middle">
+			<text><![CDATA[Total de Arrobas @:]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4b5184d0-09d7-494c-b22b-8f30c239287f"/>
+		</element>
+	</pageHeader>
+	<columnHeader height="37" splitType="Stretch">
+		<element kind="staticText" uuid="acc67938-999c-4538-b220-6009b84f2fd6" x="0" y="8" width="162" height="20" fontSize="12.0" bold="true" vTextAlign="Bottom">
+			<text><![CDATA[Categoria]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b462779e-b64a-4159-aa4f-67745a449b98"/>
+		</element>
+		<element kind="staticText" uuid="f3d17a48-dcac-40da-8ac8-dda05c4a7707" x="162" y="8" width="160" height="20" fontSize="12.0" bold="true" vTextAlign="Bottom">
+			<text><![CDATA[Quantidade]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="40c08313-40ca-421a-b976-116c34e5b131"/>
+		</element>
+		<element kind="staticText" uuid="4f6cba56-9854-45a1-8816-ff115ba9298a" x="377" y="8" width="160" height="20" fontSize="12.0" bold="true" vTextAlign="Bottom">
+			<text><![CDATA[Peso ]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="52a36169-40de-4ced-a993-121b23e197b4"/>
+		</element>
+		<element kind="staticText" uuid="8c608333-6d1c-4897-8751-be7a31bc2323" x="512" y="8" width="160" height="20" fontSize="12.0" bold="true" vTextAlign="Bottom">
+			<text><![CDATA[UA]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a6389045-ed9c-4efd-9ae8-eeb5cec6010d"/>
+		</element>
+		<element kind="staticText" uuid="e43f5901-70ea-43b1-bd58-34919af5db20" x="674" y="8" width="160" height="20" fontSize="12.0" bold="true" vTextAlign="Bottom">
+			<text><![CDATA[Arroba @]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4b5184d0-09d7-494c-b22b-8f30c239287f"/>
+		</element>
+		<element kind="line" uuid="7fa40edd-2ebb-47df-bb6f-4e5b8b0290ba" x="-20" y="35" width="852" height="1"/>
+	</columnHeader>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<element kind="rectangle" uuid="2f2b0981-bf92-4557-99dd-0de9cd182239" x="-20" y="-1" width="841" height="19" forecolor="rgba(0, 0, 0, 0.0)" backcolor="rgba(207, 207, 207, 0.6745098)">
+				<printWhenExpression><![CDATA[$V{REPORT_COUNT} % 2 != 0]]></printWhenExpression>
+			</element>
+			<element kind="textField" uuid="6fb4e0f7-b1e5-4485-9a06-16d08e822dd2" x="0" y="0" width="162" height="17">
+				<expression><![CDATA[$F{categoria}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b462779e-b64a-4159-aa4f-67745a449b98"/>
+			</element>
+			<element kind="textField" uuid="91fc2a2a-57be-4275-8ad8-40f142f2ca6c" x="155" y="0" width="72" height="17" pattern="#,#00.##" hTextAlign="Right">
+				<expression><![CDATA[$F{qtde}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="40c08313-40ca-421a-b976-116c34e5b131"/>
+			</element>
+			<element kind="textField" uuid="3c8aeedf-9f81-4a76-bb63-c9d69121cfb6" x="343" y="0" width="62" height="17" pattern="#,#00.00" hTextAlign="Right">
+				<expression><![CDATA[$F{peso_medio}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="52a36169-40de-4ced-a993-121b23e197b4"/>
+			</element>
+			<element kind="textField" uuid="8c705df0-048d-49d0-96b5-b94f07fa7b60" x="472" y="1" width="62" height="17" pattern="#,#00.00" hTextAlign="Right">
+				<expression><![CDATA[$F{ua}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a6389045-ed9c-4efd-9ae8-eeb5cec6010d"/>
+			</element>
+			<element kind="textField" uuid="c04c41df-83a4-42e1-b723-2c49adeb2f74" x="656" y="2" width="72" height="17" pattern="#,#00.00" hTextAlign="Right">
+				<expression><![CDATA[$F{arroba}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4b5184d0-09d7-494c-b22b-8f30c239287f"/>
+			</element>
+		</band>
+	</detail>
+</jasperReport>

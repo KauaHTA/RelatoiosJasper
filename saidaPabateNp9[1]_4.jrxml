@@ -1,0 +1,510 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="saidaDeAnimalPabate" language="java" columnCount="1" pageWidth="875" pageHeight="595" orientation="Landscape" columnWidth="865" leftMargin="5" rightMargin="5" topMargin="5" bottomMargin="5" uuid="881146f6-def3-41a3-b377-25f08227584c">
+	<property name="com.jaspersoft.studio.data.sql.tables" value="eGdwX29wZXJhY2FvIEFTICw0MDUsMjUsZGIxMWE4NTYtYzdjNC00ZmJiLTgzNDgtNGIyYzkwNjNj&#xa;YTE4O3hncF9tb3YgQVMgLDYyNiw5NSwxZTgyMzk0ZS05OWMxLTQxZTYtYjdlYi0zNWM4MjIxYWFl&#xa;YTY7dndfeGdwX2VuZ29yZGFfYW5pbWFsIEFTICw4MjcsMTA2MSwxZWQ5ZjA4MC01M2ZkLTQyMzEt&#xa;OTIwYy0zZDI2OTk3YTNiMzY7eGdwX3JhY2EgQVMgLDIwOCw5NjUsZTdhZDViM2UtNGIxMy00ZmEz&#xa;LThjMzAtM2YzZjg4MmZjZWVjO3hncF9hbmltYWwgQVMgLDI1LDQ5MixjMDYzNmEwYy0zMjRhLTRl&#xa;YTEtYTNiYS1iODFjZTJkYzIzZTQ7"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="FazendaGT"/>
+	<parameter name="IDMOV" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<query language="SQL"><![CDATA[SELECT mov.id_mov,
+	mov.rend_carcaca,
+	mov.valor_sub_total,
+	mov.valor_acrescimo,
+	mov.valor_total,
+	mov.valor_desconto,
+	eng.valor_impostos,
+	mov.observacao,
+	eng.peso_entrada,
+	eng.data_entrada,
+	eng.data_saida,
+	eng.peso_saida,
+	eng.qtde_dias,
+	eng.valor_venda,
+	eng.custo_operacional,
+	mov.data_abate,
+	eng.custo_sanitario,
+	mov.valor_liquido,
+	mov.valor_arroba,
+	an.cod_botom_manejo,
+	rc.descricao,
+	eng.custo_animal,
+	mov.valor_funrural,
+	eng.valor_liquido,
+	eng.rend_carcaca,
+	an.gmd,
+	op.descricao,
+	op.descricao_mov,
+	an.id_animal,
+	eng.custo_alimentar
+FROM vw_xgp_engorda_animal AS eng
+	left join xgp_mov AS mov ON 
+	 mov.id_mov = eng.id_mov_saida 
+	left join xgp_animal AS an ON 
+	 eng.id_animal = an.id_animal 
+	left join xgp_raca AS rc ON 
+	 an.id_raca = rc.id_raca 
+	left join xgp_operacao AS op ON 
+	 op.id_operacao = mov.id_operacao 
+WHERE 
+	 mov.id_mov = $P{IDMOV}]]></query>
+	<field name="id_mov" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id_mov"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_mov"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_mov"/>
+	</field>
+	<field name="rend_carcaca" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="rend_carcaca"/>
+		<property name="com.jaspersoft.studio.field.label" value="rend_carcaca"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_mov"/>
+	</field>
+	<field name="valor_sub_total" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valor_sub_total"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor_sub_total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_mov"/>
+	</field>
+	<field name="valor_acrescimo" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valor_acrescimo"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor_acrescimo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_mov"/>
+	</field>
+	<field name="valor_total" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valor_total"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor_total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_mov"/>
+	</field>
+	<field name="valor_desconto" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valor_desconto"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor_desconto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_mov"/>
+	</field>
+	<field name="valor_impostos" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valor_impostos"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor_impostos"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_xgp_engorda_animal"/>
+	</field>
+	<field name="observacao" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="observacao"/>
+		<property name="com.jaspersoft.studio.field.label" value="observacao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_mov"/>
+	</field>
+	<field name="peso_entrada" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="peso_entrada"/>
+		<property name="com.jaspersoft.studio.field.label" value="peso_entrada"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_xgp_engorda_animal"/>
+	</field>
+	<field name="data_entrada" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data_entrada"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_entrada"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_xgp_engorda_animal"/>
+	</field>
+	<field name="data_saida" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data_saida"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_saida"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_xgp_engorda_animal"/>
+	</field>
+	<field name="peso_saida" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="peso_saida"/>
+		<property name="com.jaspersoft.studio.field.label" value="peso_saida"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_xgp_engorda_animal"/>
+	</field>
+	<field name="qtde_dias" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="qtde_dias"/>
+		<property name="com.jaspersoft.studio.field.label" value="qtde_dias"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_xgp_engorda_animal"/>
+	</field>
+	<field name="valor_venda" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valor_venda"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor_venda"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_xgp_engorda_animal"/>
+	</field>
+	<field name="custo_operacional" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="custo_operacional"/>
+		<property name="com.jaspersoft.studio.field.label" value="custo_operacional"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_xgp_engorda_animal"/>
+	</field>
+	<field name="data_abate" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data_abate"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_abate"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_mov"/>
+	</field>
+	<field name="custo_sanitario" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="custo_sanitario"/>
+		<property name="com.jaspersoft.studio.field.label" value="custo_sanitario"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_xgp_engorda_animal"/>
+	</field>
+	<field name="valor_liquido" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valor_liquido"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor_liquido"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_mov"/>
+	</field>
+	<field name="valor_arroba" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valor_arroba"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor_arroba"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_mov"/>
+	</field>
+	<field name="cod_botom_manejo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cod_botom_manejo"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_botom_manejo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_animal"/>
+	</field>
+	<field name="descricao" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="descricao"/>
+		<property name="com.jaspersoft.studio.field.label" value="descricao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_raca"/>
+	</field>
+	<field name="custo_animal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="custo_animal"/>
+		<property name="com.jaspersoft.studio.field.label" value="custo_animal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_xgp_engorda_animal"/>
+	</field>
+	<field name="valor_funrural" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valor_funrural"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor_funrural"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_mov"/>
+	</field>
+	<field name="COLUMN_24" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valor_liquido"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor_liquido"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_xgp_engorda_animal"/>
+	</field>
+	<field name="COLUMN_25" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="rend_carcaca"/>
+		<property name="com.jaspersoft.studio.field.label" value="rend_carcaca"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_xgp_engorda_animal"/>
+	</field>
+	<field name="gmd" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="gmd"/>
+		<property name="com.jaspersoft.studio.field.label" value="gmd"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_animal"/>
+	</field>
+	<field name="COLUMN_27" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="descricao"/>
+		<property name="com.jaspersoft.studio.field.label" value="descricao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_operacao"/>
+	</field>
+	<field name="descricao_mov" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="descricao_mov"/>
+		<property name="com.jaspersoft.studio.field.label" value="descricao_mov"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_operacao"/>
+	</field>
+	<field name="id_animal" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id_animal"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_animal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xgp_animal"/>
+	</field>
+	<field name="custo_alimentar" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="custo_alimentar"/>
+		<property name="com.jaspersoft.studio.field.label" value="custo_alimentar"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vw_xgp_engorda_animal"/>
+	</field>
+	<variable name="custo_sanitario1" resetType="Page" calculation="Sum" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{custo_sanitario}]]></expression>
+	</variable>
+	<variable name="valor_liquido1" resetType="Page" calculation="Sum" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{valor_liquido}]]></expression>
+	</variable>
+	<variable name="valor_venda1" resetType="Page" calculation="Sum" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{valor_venda}]]></expression>
+	</variable>
+	<variable name="custo_operacional1" resetType="Page" calculation="Sum" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{custo_operacional}]]></expression>
+	</variable>
+	<variable name="custo_sanitario2" resetType="Page" calculation="Sum" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{custo_sanitario}]]></expression>
+	</variable>
+	<variable name="valor_impostos1" resetType="Page" calculation="Sum" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{valor_impostos}]]></expression>
+	</variable>
+	<variable name="valor_liquido2" resetType="Page" calculation="Sum" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{valor_liquido}]]></expression>
+	</variable>
+	<variable name="valor_desconto1" resetType="Page" calculation="Sum" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{valor_desconto}]]></expression>
+	</variable>
+	<variable name="COLUMN_241" resetType="Page" calculation="Sum" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{COLUMN_24}]]></expression>
+	</variable>
+	<variable name="valor_total1" resetType="Page" calculation="Sum" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{valor_total}]]></expression>
+	</variable>
+	<variable name="peso_saida1" resetType="Page" calculation="Average" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{peso_saida}]]></expression>
+	</variable>
+	<variable name="peso_entrada1" resetType="Page" calculation="Average" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{peso_entrada}]]></expression>
+	</variable>
+	<variable name="Variable_1" class="java.lang.String">
+		<expression><![CDATA[($F{peso_saida}.doubleValue() - $F{peso_entrada}.doubleValue())
+/ ($F{qtde_dias} == 0 ? 1 : $F{qtde_dias}.doubleValue())
+]]></expression>
+	</variable>
+	<variable name="valor_venda2" resetType="Page" calculation="Average" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{valor_venda}]]></expression>
+	</variable>
+	<variable name="GMD_MEDIA" calculation="Average" class="java.lang.Double">
+		<expression><![CDATA[($F{peso_saida}.doubleValue() - $F{peso_entrada}.doubleValue())
+/ ($F{qtde_dias} == 0 ? 1 : $F{qtde_dias}.doubleValue())
+]]></expression>
+	</variable>
+	<variable name="GMD_DIA" class="java.lang.Double">
+		<expression><![CDATA[($F{peso_saida}.doubleValue() - $F{peso_entrada}.doubleValue())
+/ ($F{qtde_dias}.intValue() == 0 ? 1.0 : $F{qtde_dias}.doubleValue())
+]]></expression>
+	</variable>
+	<variable name="custo_alimentar1" resetType="Page" calculation="Average" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{custo_alimentar}]]></expression>
+	</variable>
+	<variable name="custo_alimentar2" resetType="Page" calculation="Sum" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{custo_alimentar}]]></expression>
+	</variable>
+	<background splitType="Stretch"/>
+	<title height="94" splitType="Stretch">
+		<element kind="staticText" uuid="22dd9f4c-d4b6-424a-b351-080b8d18da9b" x="330" y="3" width="210" height="20" fontSize="14.0" bold="true">
+			<text><![CDATA[SAIDA DE ANIMAIS P/ ABATE]]></text>
+		</element>
+		<element kind="textField" uuid="8b72a147-cd9f-4b87-807f-363c39971fb2" x="782" y="3" width="81" height="17" fontSize="10.0" pattern="d/M/yy h:mm a" italic="false" bold="false">
+			<expression><![CDATA[new java.util.Date()]]></expression>
+		</element>
+		<element kind="staticText" uuid="f8628b77-5feb-46b3-abf2-f911b17e378a" x="741" y="4" width="51" height="17" fontSize="8.0" bold="true">
+			<text><![CDATA[EMISSÃO:]]></text>
+		</element>
+		<element kind="textField" uuid="0a993e81-a4a4-4c3c-bbd6-9e880aa7d983" x="780" y="20" width="68" height="14" fontSize="8.0">
+			<expression><![CDATA[$V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="staticText" uuid="d98cc7fc-b042-439f-9808-f5d36575988a" x="741" y="20" width="41" height="14" fontSize="8.0" bold="true">
+			<text><![CDATA[PÁGINA:]]></text>
+		</element>
+		<element kind="rectangle" uuid="09c36c5c-7e1e-48cf-913e-cf6ea3b374bc" x="-5" y="68" width="873" height="25" forecolor="rgba(0, 0, 0, 0.019607844)" backcolor="rgba(207, 207, 207, 0.49803922)"/>
+		<element kind="staticText" uuid="15fe0d70-6c76-4b61-8b0b-5751b367e1eb" x="140" y="41" width="58" height="16" fontSize="9.0" bold="true" hTextAlign="Left">
+			<text><![CDATA[DESCRIÇÃO:]]></text>
+		</element>
+		<element kind="textField" uuid="4650b4b6-0b67-4d79-a28f-13b869864811" x="448" y="42" width="57" height="14" fontSize="8.0">
+			<expression><![CDATA[$F{COLUMN_25}]]></expression>
+		</element>
+		<element kind="staticText" uuid="b6f33870-8983-40d4-99a9-238e80c58645" x="346" y="41" width="98" height="16" fontSize="9.0" bold="true" hTextAlign="Left">
+			<text><![CDATA[RENDA DE CARCAÇA:]]></text>
+		</element>
+		<element kind="staticText" uuid="5f8d900c-5777-4e5c-95c5-9bade3e7708e" x="610" y="41" width="58" height="16" fontSize="9.0" bold="true" hTextAlign="Left">
+			<text><![CDATA[OPERAÇÃO:]]></text>
+		</element>
+		<element kind="textField" uuid="6caffb7b-02e3-4d05-8704-0bc6c5e5fc2b" x="201" y="41" width="72" height="16" fontSize="9.0">
+			<expression><![CDATA[$F{descricao_mov}]]></expression>
+		</element>
+		<element kind="textField" uuid="efc4725e-a0f9-4ed1-bad6-22bc76c61c27" x="668" y="41" width="112" height="16" fontSize="9.0">
+			<expression><![CDATA[$F{COLUMN_27}]]></expression>
+		</element>
+		<element kind="staticText" uuid="7dfd7030-692d-4934-8bcb-94d26970dc7c" x="1" y="41" width="39" height="16" fontSize="9.0" bold="true" hTextAlign="Left">
+			<text><![CDATA[ID MOV:]]></text>
+		</element>
+		<element kind="textField" uuid="8621be18-8ad0-4ed7-a882-0ec101c9ee7e" x="39" y="41" width="36" height="14" fontSize="9.0" blankWhenNull="true" hTextAlign="Left">
+			<expression><![CDATA[$F{id_mov}]]></expression>
+		</element>
+	</title>
+	<pageHeader height="17" splitType="Stretch">
+		<element kind="staticText" uuid="dd5a566c-137d-49c8-bd9d-1c25a3504627" x="1" y="-24" width="60" height="12" fontSize="8.0" bold="true" hTextAlign="Left">
+			<text><![CDATA[VALOR DA @]]></text>
+		</element>
+		<element kind="staticText" uuid="08276e44-f65b-4e0a-86c4-456d17ff04e5" x="68" y="-24" width="76" height="12" fontSize="8.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[DATA DO ABATE]]></text>
+		</element>
+		<element kind="textField" uuid="e1c8e77c-0d04-452a-b47b-8a8702d018f7" x="23" y="-12" width="29" height="12" fontSize="9.0" blankWhenNull="false">
+			<expression><![CDATA[$F{valor_arroba}]]></expression>
+		</element>
+		<element kind="textField" uuid="171cb6bb-3b64-4ad5-adf3-8e85cb33c4e2" x="95" y="-12" width="52" height="12" fontSize="9.0" pattern="dd/MM/yy" blankWhenNull="true" removeLineWhenBlank="true">
+			<expression><![CDATA[$F{data_abate}]]></expression>
+		</element>
+		<element kind="staticText" uuid="545cc3ac-5a97-451c-b439-b5f2e8e08dd9" x="180" y="-24" width="70" height="12" fontSize="8.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[DATA DE SAÍDA]]></text>
+		</element>
+		<element kind="textField" uuid="9d3c0490-8710-4f61-a68d-ace91cd0b77e" x="200" y="-13" width="66" height="12" fontSize="9.0" pattern="dd/MM/yy" blankWhenNull="true">
+			<expression><![CDATA[$F{data_saida}]]></expression>
+		</element>
+		<element kind="textField" uuid="fdd9f4ad-c76e-4256-8a79-e7d431aa9b59" x="606" y="-13" width="42" height="12" fontSize="9.0" pattern="#,##0.00#;(#,##0.00#-)" blankWhenNull="true">
+			<expression><![CDATA[$F{valor_funrural}]]></expression>
+		</element>
+		<element kind="staticText" uuid="0cc501e5-6d00-44e7-aa8b-5139af02ca20" x="552" y="-25" width="102" height="12" fontSize="8.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[IMPOSTO FUNRURAL]]></text>
+		</element>
+		<element kind="staticText" uuid="e7ad812b-9413-4fd2-a111-d64e21416339" x="436" y="-25" width="95" height="12" fontSize="8.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[VALOR DE DESCONTO]]></text>
+		</element>
+		<element kind="staticText" uuid="e7a002f2-4334-4ab8-988c-2aa189b2d0d8" x="313" y="-25" width="100" height="12" fontSize="8.0" bold="true" hTextAlign="Left">
+			<text><![CDATA[VALOR DE ACRÉSCIMO]]></text>
+		</element>
+		<element kind="textField" uuid="849610db-e05c-495b-965d-1ab90ed7c5b7" x="500" y="-13" width="34" height="12" fontSize="9.0" pattern="#,##0.00#;(#,##0.00#-)" blankWhenNull="true" removeLineWhenBlank="true">
+			<expression><![CDATA[$F{valor_desconto}]]></expression>
+		</element>
+		<element kind="textField" uuid="4c77ea45-f4e6-46e7-a261-30cae1a8c2ef" x="366" y="-13" width="42" height="12" fontSize="9.0" pattern="#,##0.00#;(#,##0.00#-)" blankWhenNull="true" removeLineWhenBlank="true">
+			<expression><![CDATA[$F{valor_acrescimo}]]></expression>
+		</element>
+		<element kind="staticText" uuid="1821f538-ab23-4097-bddf-551dbf6fc3db" x="689" y="-25" width="70" height="12" fontSize="8.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[VALOR TOTAL]]></text>
+		</element>
+		<element kind="textField" uuid="a388093b-4452-44f0-b329-f85293c8aeed" x="700" y="-13" width="58" height="12" fontSize="9.0" pattern="#,##0.00#;(#,##0.00#-)" blankWhenNull="true">
+			<expression><![CDATA[$F{valor_total}]]></expression>
+		</element>
+		<element kind="staticText" uuid="f2b7b2d6-e031-4e83-a873-c490e79d6840" x="788" y="2" width="41" height="14" fontSize="8.0" bold="true">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}.intValue() > 1
+]]></printWhenExpression>
+			<text><![CDATA[PÁGINA:]]></text>
+		</element>
+		<element kind="textField" uuid="4a3a0202-6cdb-467f-9bfc-aa7d0a1057d0" x="823" y="2" width="34" height="14" fontSize="8.0">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}.intValue() > 1
+]]></printWhenExpression>
+			<expression><![CDATA[$V{PAGE_NUMBER}]]></expression>
+		</element>
+	</pageHeader>
+	<columnHeader height="36">
+		<element kind="staticText" uuid="063ab668-80c5-43c6-b490-0e8260ad31fc" x="6" y="7" width="40" height="20" fontSize="8.0" bold="true" hTextAlign="Left">
+			<text><![CDATA[IDV/IDE]]></text>
+		</element>
+		<element kind="staticText" uuid="0220ae68-8214-42a3-ab03-e51349e045db" x="42" y="7" width="30" height="20" fontSize="8.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[RAÇA]]></text>
+		</element>
+		<element kind="staticText" uuid="b11494f2-49a0-40bf-97ff-1ab537d79520" x="74" y="7" width="67" height="20" fontSize="7.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[DATA DE 
+ ENTRADA]]></text>
+		</element>
+		<element kind="staticText" uuid="5dd22fbb-1168-4b59-90b6-57fa0797d689" x="119" y="7" width="81" height="20" fontSize="7.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[PESO DE
+ENTRADA ]]></text>
+		</element>
+		<element kind="staticText" uuid="b8721d77-ca49-439e-ad56-180583970274" x="295" y="7" width="64" height="20" fontSize="7.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[PERMANÊNCIA
+       
+]]></text>
+		</element>
+		<element kind="staticText" uuid="3e900994-3ef8-43c3-bdfe-433ec00c071f" x="303" y="15" width="40" height="8" fontSize="6.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[(DIAS)]]></text>
+		</element>
+		<element kind="staticText" uuid="04ae256a-1f5c-44cb-bdad-0c889616705f" x="350" y="7" width="78" height="20" fontSize="7.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[VALOR DE 
+VENDA]]></text>
+		</element>
+		<element kind="staticText" uuid="679cf0ca-6665-4094-b17a-39a3a7aa2885" x="410" y="7" width="70" height="20" fontSize="7.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[CUSTO DO 
+ANIMAL ]]></text>
+		</element>
+		<element kind="staticText" uuid="755f39b0-17eb-4f34-92c2-09f72b87dda5" x="551" y="7" width="60" height="20" fontSize="7.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[CUSTO 
+OPERACIONAL ]]></text>
+		</element>
+		<element kind="staticText" uuid="a82d1af0-9c89-4afe-9f50-d0fac1e4572f" x="687" y="7" width="72" height="20" fontSize="7.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[CUSTO DE 
+IMPOSTOS ]]></text>
+		</element>
+		<element kind="staticText" uuid="da9ef668-c560-4d31-a897-7f46d8034167" x="608" y="7" width="80" height="20" fontSize="7.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[CUSTO 
+SANITÁRIO ]]></text>
+		</element>
+		<element kind="staticText" uuid="07938bce-7003-440d-81ed-5d16f79e9227" x="779" y="7" width="70" height="20" fontSize="7.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[VALOR 
+LÍQUIDO ]]></text>
+		</element>
+		<element kind="line" uuid="6beabcb7-ca41-4701-8f6d-1d3f5b183591" x="-23" y="27" width="892" height="2"/>
+		<element kind="staticText" uuid="e1b24047-c694-42bf-91eb-eb6fb45a90fb" x="189" y="7" width="50" height="20" fontSize="7.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[PESO DE 
+SAÍDA ]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b8014332-19d6-456e-b4a8-0a3d9b2d7326"/>
+		</element>
+		<element kind="staticText" uuid="d1bac593-17ee-441b-b391-38e6bf4be8ce" x="254" y="7" width="32" height="20" fontSize="8.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[GMD]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e837a0f3-5f75-463c-adcd-55bb017098c9"/>
+		</element>
+		<element kind="staticText" uuid="1b84dbf9-ce81-4d10-b027-a41ff67c5d08" x="478" y="7" width="74" height="20" fontSize="7.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[CUSTO 
+ALIMENTAR ]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4440ab2f-a2bf-47e5-b308-d21583992180"/>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<element kind="rectangle" uuid="af41aa6e-a223-4b59-a32a-e01a9414b634" x="-4" y="-2" width="872" height="19" forecolor="rgba(0, 0, 0, 0.0)" backcolor="rgba(207, 207, 207, 0.6745098)">
+				<printWhenExpression><![CDATA[$V{REPORT_COUNT} % 2 != 0]]></printWhenExpression>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="3c4836f4-d01f-43a2-8630-b2a363d09a04" x="-4" y="-1" width="40" height="18" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{cod_botom_manejo}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="35fa6b11-407f-4a6e-8e0a-72ab40401cd2"/>
+			</element>
+			<element kind="textField" uuid="86606524-d1b1-495a-aec2-5339cc69d270" x="46" y="0" width="46" height="18" fontSize="8.0" hTextAlign="Left">
+				<expression><![CDATA[$F{descricao}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="98da3f3c-39b4-4e89-9aac-bb427187d620"/>
+			</element>
+			<element kind="textField" uuid="519d55e3-9d17-48a0-9136-af69308ee0d4" x="86" y="0" width="46" height="18" pattern="dd/MM/yy" hTextAlign="Center">
+				<expression><![CDATA[$F{data_entrada}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="930e818c-dd34-4e62-b6ec-963766a572da"/>
+			</element>
+			<element kind="textField" uuid="adffd110-28dc-4be0-8feb-ee165867d1df" x="299" y="-1" width="46" height="18" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{qtde_dias}]]></expression>
+			</element>
+			<element kind="textField" uuid="543bebb3-aae9-4f77-8132-cd9b5d9bb0e1" x="88" y="0" width="88" height="18" pattern="#,##0.###;(#,##0.###-)" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{peso_entrada}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="28351712-d87f-4e9d-9558-ddad876a0cd0"/>
+			</element>
+			<element kind="textField" uuid="7df6da83-c2b1-4172-81bb-b0963d776096" x="325" y="-1" width="84" height="19" pattern="#,##0.00#;(#,##0.00#-)" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{valor_venda}]]></expression>
+			</element>
+			<element kind="textField" uuid="ec98deee-fed5-4ec5-b753-92e10ff6862e" x="561" y="-1" width="46" height="18" pattern="#,##0.00#;(#,##0.00#-)" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{custo_operacional}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7a78159c-a246-44b5-abd0-8b8ca6f2bba3"/>
+			</element>
+			<element kind="textField" uuid="be8b9d21-02c0-4ba9-976d-93a00ebb8b0c" x="597" y="-1" width="58" height="17" pattern="#,##0.00#;(#,##0.00#-)" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{custo_sanitario}]]></expression>
+			</element>
+			<element kind="textField" uuid="961cf860-eba3-47c3-9aea-b619215f8464" x="398" y="-1" width="66" height="18" pattern="#,##0.00#;(#,##0.00#-)" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{custo_animal}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="420afaf0-fd10-4db4-b6ba-66931bb0d7d5"/>
+			</element>
+			<element kind="textField" uuid="fc23a4b1-d927-46fe-b646-38abc1ca5ef0" x="691" y="-1" width="50" height="16" pattern="#,##0.00#;(#,##0.00#-)" blankWhenNull="true" removeLineWhenBlank="true" hTextAlign="Right">
+				<expression><![CDATA[$F{valor_impostos}]]></expression>
+			</element>
+			<element kind="textField" uuid="b6ce5bae-73db-4256-8162-9ac5bf3e0d9e" x="750" y="-1" width="78" height="17" pattern="#,##0.00#;-#,##0.00#" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{COLUMN_24}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d87f6251-6498-423b-91c5-64fa35a50560"/>
+			</element>
+			<element kind="textField" uuid="237a1cba-7fb1-4ed8-889f-a4e241a181a8" x="210" y="0" width="59" height="15" pattern="#,##0.###;#,##0.###-" blankWhenNull="true">
+				<expression><![CDATA[$F{peso_saida}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b8014332-19d6-456e-b4a8-0a3d9b2d7326"/>
+			</element>
+			<element kind="textField" uuid="b3c844aa-f500-4541-a37c-ef6f0d7ad92d" x="260" y="0" width="59" height="15" pattern="#,##0.00;-#,##0.###">
+				<expression><![CDATA[($F{peso_saida}.doubleValue() - $F{peso_entrada}.doubleValue())
+/ ($F{qtde_dias} == 0 ? 1 : $F{qtde_dias}.doubleValue())
+]]></expression>
+			</element>
+			<element kind="textField" uuid="2d880dda-84c4-4121-895d-5859bd4bb42b" x="500" y="-2" width="70" height="20" pattern="#,##0.##;-#,##0.###" blankWhenNull="true">
+				<expression><![CDATA[$F{custo_alimentar}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4440ab2f-a2bf-47e5-b308-d21583992180"/>
+			</element>
+		</band>
+	</detail>
+	<lastPageFooter height="39">
+		<element kind="textField" uuid="dce880c2-1955-49c3-bcdb-c1ace7b8f9b2" x="320" y="6" width="90" height="19" pattern="#,##0.00#;-#,##0.00#" blankWhenNull="true" hTextAlign="Right">
+			<expression><![CDATA[$V{valor_venda1}]]></expression>
+		</element>
+		<element kind="textField" uuid="277343a7-c207-4541-8136-c101bf25b526" x="527" y="6" width="80" height="19" pattern="#,##0.00#;-#,##0.00#" blankWhenNull="true" hTextAlign="Right">
+			<expression><![CDATA[$V{custo_operacional1}]]></expression>
+		</element>
+		<element kind="textField" uuid="4a075dc5-487a-41d8-b4e8-0ab13e6fd4ed" x="594" y="6" width="63" height="19" pattern="#,##0.00#;-#,##0.00#" blankWhenNull="true" hTextAlign="Right">
+			<expression><![CDATA[$V{custo_sanitario2}]]></expression>
+		</element>
+		<element kind="textField" uuid="27486ed1-fa39-44e0-adda-21f8a645c1f2" x="670" y="6" width="70" height="19" pattern="#,##0.00#;-#,##0.00#" blankWhenNull="true" hTextAlign="Right">
+			<expression><![CDATA[$V{valor_impostos1}]]></expression>
+		</element>
+		<element kind="textField" uuid="2e1261bf-f064-4c2c-965f-bc08435e27f7" x="750" y="6" width="78" height="19" pattern="#,##0.00#;-#,##0.00#" blankWhenNull="true" hTextAlign="Right">
+			<expression><![CDATA[$V{COLUMN_241}]]></expression>
+		</element>
+		<element kind="line" uuid="5ba0ebf1-e8b2-4d71-be8b-da55006ef01b" x="-10" y="4" width="880" height="1"/>
+		<element kind="textField" uuid="4adc9e22-cfd5-4317-bc01-e0eec11f2663" x="196" y="6" width="59" height="21" pattern="#,##0.00#;-#,##0.00#" blankWhenNull="true">
+			<expression><![CDATA[$V{peso_saida1}]]></expression>
+		</element>
+		<element kind="textField" uuid="ae31e03a-47de-4986-8193-169cdbebb2a8" x="145" y="6" width="84" height="19" pattern="#,##0.00#;-#,##0.00#" blankWhenNull="true">
+			<expression><![CDATA[$V{peso_entrada1}]]></expression>
+		</element>
+		<element kind="textField" uuid="90b866b3-33c9-4141-a5d5-1c04b362bbf3" x="261" y="6" width="67" height="20" pattern="#,##0.00;-#,##0.00#">
+			<expression><![CDATA[$V{GMD_MEDIA}]]></expression>
+		</element>
+		<element kind="textField" uuid="101bae3c-2764-4cb4-ae92-b2d203d87b6f" x="500" y="6" width="70" height="19" pattern="#,##0.##;-#,##0.###">
+			<expression><![CDATA[$V{custo_alimentar2}]]></expression>
+		</element>
+	</lastPageFooter>
+</jasperReport>

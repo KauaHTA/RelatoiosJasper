@@ -1,0 +1,76 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="subport" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f41b2bec-9ec1-4f5e-95f1-a18cb59ae800">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Fazenda Bom Sucesso "/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<parameter name="id_ordem" class="java.lang.Integer"/>
+	<query language="SQL"><![CDATA[SELECT pc.id_parcela,
+	pc.data_vencimento,
+	pc.valor,
+	pc.observacao,
+	ord.qtde_parcela,
+	ord.valor_total,
+	ord.id_ordem
+FROM xoc_ordem AS ord
+	LEFT JOIN xoc_parcela AS pc ON 
+	 pc.id_ordem = ord.id_ordem 
+WHERE 
+	 ord.id_ordem = $P{id_ordem}]]></query>
+	<field name="id_parcela" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id_parcela"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_parcela"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xoc_parcela"/>
+	</field>
+	<field name="data_vencimento" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data_vencimento"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_vencimento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xoc_parcela"/>
+	</field>
+	<field name="valor" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valor"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xoc_parcela"/>
+	</field>
+	<field name="observacao" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="observacao"/>
+		<property name="com.jaspersoft.studio.field.label" value="observacao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xoc_parcela"/>
+	</field>
+	<field name="qtde_parcela" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="qtde_parcela"/>
+		<property name="com.jaspersoft.studio.field.label" value="qtde_parcela"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xoc_ordem"/>
+	</field>
+	<field name="valor_total" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valor_total"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor_total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xoc_ordem"/>
+	</field>
+	<field name="id_ordem" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id_ordem"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_ordem"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xoc_ordem"/>
+	</field>
+	<variable name="parcela" calculation="Count" class="java.lang.Integer">
+		<expression><![CDATA[true]]></expression>
+		<initialValueExpression><![CDATA[1]]></initialValueExpression>
+	</variable>
+	<background splitType="Stretch"/>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<element kind="textField" uuid="b153e6ff-6368-4f05-b94f-a2780dd1b42d" x="83" y="1" width="65" height="15" fontSize="8.0" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{valor}]]></expression>
+			</element>
+			<element kind="textField" uuid="10b483f6-70a3-43ac-9663-ebdb556c98ab" x="32" y="1" width="100" height="15" fontSize="8.0" pattern="dd/MM/yyy" blankWhenNull="true">
+				<expression><![CDATA[$F{data_vencimento}]]></expression>
+			</element>
+			<element kind="textField" uuid="7ca15648-6c8c-4226-b53b-bec94c3bde9f" x="210" y="1" width="100" height="15" fontSize="8.0" blankWhenNull="true">
+				<expression><![CDATA[$F{valor}]]></expression>
+			</element>
+			<element kind="textField" uuid="91e49da2-a5ac-4b7d-b738-945e71c69f26" x="-27" y="3" width="100" height="14" fontSize="8.0">
+				<expression><![CDATA[$V{parcela} + "/" + $F{qtde_parcela}
+]]></expression>
+			</element>
+		</band>
+	</detail>
+</jasperReport>
