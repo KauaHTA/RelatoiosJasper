@@ -1,0 +1,307 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="RelatorioResumoDesmama" language="java" columnCount="1" pageWidth="1180" pageHeight="840" orientation="Landscape" columnWidth="1170" leftMargin="5" rightMargin="5" topMargin="20" bottomMargin="20" uuid="0d3ae1a2-b7be-4be4-9258-904d4571a9c1">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="FazendaGT"/>
+	<parameter name="dias_previsto" class="java.lang.Integer"/>
+	<parameter name="id_empresa" class="java.lang.Integer"/>
+	<parameter name="raca" class="java.lang.String">
+		<description><![CDATA[Primeira letra Maiúscula ]]></description>
+	</parameter>
+	<parameter name="sexo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$F{sexo}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_manejo" class="java.lang.Integer"/>
+	<query language="SQL"><![CDATA[SELECT * 
+FROM f_relatorio_desmama(
+     COALESCE($P{dias_previsto}, 210),
+    $P{id_empresa},
+    $P{id_manejo},
+    $P{raca},
+    $P{sexo}
+)
+]]></query>
+	<field name="id_empresa" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id_empresa"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_empresa"/>
+	</field>
+	<field name="fazenda" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="fazenda"/>
+		<property name="com.jaspersoft.studio.field.label" value="fazenda"/>
+	</field>
+	<field name="manejo" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="manejo"/>
+		<property name="com.jaspersoft.studio.field.label" value="manejo"/>
+	</field>
+	<field name="idv" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="idv"/>
+		<property name="com.jaspersoft.studio.field.label" value="idv"/>
+	</field>
+	<field name="ide" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ide"/>
+		<property name="com.jaspersoft.studio.field.label" value="ide"/>
+	</field>
+	<field name="sexo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="sexo"/>
+		<property name="com.jaspersoft.studio.field.label" value="sexo"/>
+	</field>
+	<field name="raca" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="raca"/>
+		<property name="com.jaspersoft.studio.field.label" value="raca"/>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome"/>
+	</field>
+	<field name="data_nascimento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="data_nascimento"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_nascimento"/>
+	</field>
+	<field name="peso_inicial" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="peso_inicial"/>
+		<property name="com.jaspersoft.studio.field.label" value="peso_inicial"/>
+	</field>
+	<field name="pai" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pai"/>
+		<property name="com.jaspersoft.studio.field.label" value="pai"/>
+	</field>
+	<field name="mae" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mae"/>
+		<property name="com.jaspersoft.studio.field.label" value="mae"/>
+	</field>
+	<field name="pai_do_pai" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pai_do_pai"/>
+		<property name="com.jaspersoft.studio.field.label" value="pai_do_pai"/>
+	</field>
+	<field name="pai_da_mae" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pai_da_mae"/>
+		<property name="com.jaspersoft.studio.field.label" value="pai_da_mae"/>
+	</field>
+	<field name="categoria_matriz" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="categoria_matriz"/>
+		<property name="com.jaspersoft.studio.field.label" value="categoria_matriz"/>
+	</field>
+	<field name="data_desmama" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="data_desmama"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_desmama"/>
+	</field>
+	<field name="dias_ate_desmama" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="dias_ate_desmama"/>
+		<property name="com.jaspersoft.studio.field.label" value="dias_ate_desmama"/>
+	</field>
+	<field name="meses_ate_desmama" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="meses_ate_desmama"/>
+		<property name="com.jaspersoft.studio.field.label" value="meses_ate_desmama"/>
+	</field>
+	<field name="peso_final" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="peso_final"/>
+		<property name="com.jaspersoft.studio.field.label" value="peso_final"/>
+	</field>
+	<field name="gmd_ate_desmama" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="gmd_ate_desmama"/>
+		<property name="com.jaspersoft.studio.field.label" value="gmd_ate_desmama"/>
+	</field>
+	<field name="dias_previsto" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="dias_previsto"/>
+		<property name="com.jaspersoft.studio.field.label" value="dias_previsto"/>
+	</field>
+	<field name="peso_ajustado" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="peso_ajustado"/>
+		<property name="com.jaspersoft.studio.field.label" value="peso_ajustado"/>
+	</field>
+	<background splitType="Stretch"/>
+	<title height="36" splitType="Stretch">
+		<element kind="textField" uuid="9f9baa07-d6b1-4355-b5b8-10f29ea0e0ff" x="1091" y="4" width="81" height="17" fontSize="10.0" pattern="dd/MM/yy HH:mm " bold="false" italic="false" vTextAlign="Middle">
+			<expression><![CDATA[new java.util.Date()]]></expression>
+		</element>
+		<element kind="staticText" uuid="f6a52d27-6f35-4a77-b5a0-2754531bf61b" x="1040" y="4" width="51" height="17" fontSize="10.0" bold="true" vTextAlign="Middle">
+			<text><![CDATA[EMISSÃO:]]></text>
+		</element>
+		<element kind="staticText" uuid="e2e2cc21-bf49-4ed4-b0e6-f84a9ae12f39" x="1040" y="21" width="51" height="14" fontSize="10.0" bold="true" vTextAlign="Middle">
+			<text><![CDATA[PÁGINA:]]></text>
+		</element>
+		<element kind="textField" uuid="efa47d08-44f7-4cd0-b2dc-2bfb80c40802" x="1091" y="21" width="71" height="14" fontSize="10.0" pattern="#,#00.###;(#,#00.###-)" vTextAlign="Middle">
+			<expression><![CDATA[$V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="staticText" uuid="0c6d5794-1576-45a7-a0fe-2dcc579e68b9" x="453" y="4" width="378" height="30" fontSize="22.0" bold="true" hTextAlign="Center" vTextAlign="Bottom">
+			<text><![CDATA[Resumo Desmama]]></text>
+		</element>
+	</title>
+	<pageHeader height="21" splitType="Stretch">
+		<element kind="textField" uuid="5adad55c-c785-4e0b-b42d-734af4975d26" x="1145" y="0" width="26" height="20" fontSize="10.0" pattern="#,#00.###;(#,#00.###-)" vTextAlign="Middle">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}.intValue() > 1
+]]></printWhenExpression>
+			<expression><![CDATA[$V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="staticText" uuid="1823aaaf-6a06-427e-bcb1-bacf35809c28" x="1096" y="0" width="49" height="20" fontSize="10.0" bold="true" vTextAlign="Middle">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}.intValue() > 1]]></printWhenExpression>
+			<text><![CDATA[PÁGINA:]]></text>
+		</element>
+	</pageHeader>
+	<columnHeader height="25" splitType="Stretch">
+		<element kind="staticText" uuid="60019bf8-60be-42a6-ae17-ddb894c07e88" x="0" y="5" width="46" height="20" fontSize="8.0" bold="true" vTextAlign="Bottom">
+			<text><![CDATA[Fazenda]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="67f500c5-cd94-460a-8f43-295a27864d1e"/>
+		</element>
+		<element kind="staticText" uuid="6d7003c2-412b-430a-8021-5cf1c4a5d91e" x="110" y="5" width="42" height="20" fontSize="8.0" bold="true" hTextAlign="Right" vTextAlign="Bottom">
+			<text><![CDATA[Manejo]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="52d82d4a-3f71-4048-bb99-17aab1318ae0"/>
+		</element>
+		<element kind="staticText" uuid="8b19dfa1-b674-427d-aa3d-16bc889ada71" x="152" y="5" width="50" height="20" fontSize="8.0" bold="true" hTextAlign="Right" vTextAlign="Bottom">
+			<text><![CDATA[IDV]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9736ef43-dc25-4a01-a0ed-ebb2ab6c3f7f"/>
+		</element>
+		<element kind="staticText" uuid="81379f95-400a-4fc4-8238-0154d6f8022e" x="223" y="5" width="42" height="20" fontSize="8.0" bold="true" vTextAlign="Bottom">
+			<text><![CDATA[Sexo]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="80d6ebd5-408e-42ac-a85f-f89695ced090"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="4e5a8840-c9a7-4e88-b63b-ade1762c4ea0" x="280" y="5" width="42" height="20" fontSize="8.0" bold="true" vTextAlign="Bottom">
+			<text><![CDATA[Raça]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1a89df81-4694-48b7-b1ef-b368f167b862"/>
+		</element>
+		<element kind="staticText" uuid="0ee5d766-9e6a-40f7-a408-9eecb90c257f" x="327" y="5" width="68" height="20" fontSize="8.0" bold="true" hTextAlign="Right" vTextAlign="Bottom">
+			<text><![CDATA[Nasc. Data]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="99513750-2b3d-4fba-9414-bb30405fa1a4"/>
+		</element>
+		<element kind="staticText" uuid="a7270133-f599-481a-9c43-362c61cc6724" x="426" y="5" width="42" height="20" fontSize="8.0" bold="true" vTextAlign="Bottom">
+			<text><![CDATA[Pai]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f1d4e506-583b-4e63-bbbe-60a33a0866ce"/>
+		</element>
+		<element kind="staticText" uuid="fd4f67f4-6c62-420f-a2b1-75687a926963" x="496" y="5" width="44" height="20" fontSize="8.0" bold="true" hTextAlign="Right" vTextAlign="Bottom">
+			<text><![CDATA[Mãe]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ceef0911-61e4-4cb8-8117-3adc948000d7"/>
+		</element>
+		<element kind="staticText" uuid="37606c1e-79a0-4052-9158-3c1f657583c4" x="557" y="5" width="70" height="20" fontSize="7.0" bold="true" hTextAlign="Left" vTextAlign="Bottom">
+			<text><![CDATA[Categoria 
+   Matriz]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a93afe10-24b7-4e3b-b0d4-a5bebf23aabb"/>
+		</element>
+		<element kind="staticText" uuid="370e8e3a-2bbb-42ff-b1a2-01ef494ed162" x="747" y="5" width="65" height="20" fontSize="8.0" bold="true" hTextAlign="Right" vTextAlign="Bottom">
+			<text><![CDATA[Data Desmama]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2682979a-a17e-41c7-8e34-e8099b8ff0c6"/>
+		</element>
+		<element kind="staticText" uuid="81ec7ef4-05b9-4c57-b1da-f56bcf60dac9" x="1010" y="5" width="74" height="20" fontSize="7.0" bold="true" hTextAlign="Center" vTextAlign="Top">
+			<text><![CDATA[      Dias
+    Previsto]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2701b89c-4613-4ff4-9fbd-1b0fd3bc9095"/>
+		</element>
+		<element kind="staticText" uuid="a29d3626-3a1a-404e-8f0e-1444867adfa9" x="815" y="5" width="80" height="20" fontSize="8.0" bold="true" hTextAlign="Right" vTextAlign="Bottom">
+			<text><![CDATA[Idade Desm(Meses)]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="94e19d11-b548-4d2a-ae58-6f743641e053"/>
+		</element>
+		<element kind="staticText" uuid="e045d4ab-4f16-4f4a-b93c-361a52f0f680" x="687" y="5" width="60" height="20" fontSize="7.0" bold="true" hTextAlign="Right" vTextAlign="Bottom">
+			<text><![CDATA[  Peso 
+Desmama]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="91cd08a9-fefe-4f87-951a-7f4dc06eb228"/>
+		</element>
+		<element kind="staticText" uuid="bc2d8cf1-2695-46b0-b872-72e6d433831e" x="981" y="5" width="22" height="20" fontSize="8.0" bold="true" hTextAlign="Right" vTextAlign="Bottom">
+			<text><![CDATA[GMD ]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="51ceedd4-2bdb-41a6-9131-3f6c4ac19df6"/>
+		</element>
+		<element kind="staticText" uuid="e95e6a79-78d6-490e-85b4-c1ddd9b078a3" x="903" y="5" width="68" height="20" fontSize="8.0" bold="true" hTextAlign="Right" vTextAlign="Bottom">
+			<text><![CDATA[Idade Desm(Dias)]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="822bebaf-2649-4f80-9c23-4153f0b73f67"/>
+		</element>
+		<element kind="staticText" uuid="c68174d1-ee5c-42e2-b590-545c91be2aff" x="1096" y="5" width="60" height="20" fontSize="8.0" bold="true" hTextAlign="Right" vTextAlign="Bottom">
+			<text><![CDATA[Peso Ajustado]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="33214c23-f672-4631-a735-4790c0efc90f"/>
+		</element>
+		<element kind="staticText" uuid="90bab6de-c6dc-4cf2-a027-90cee8c3cc5d" x="621" y="5" width="60" height="20" fontSize="8.0" bold="true" hTextAlign="Right" vTextAlign="Bottom">
+			<text><![CDATA[Peso Nasc.]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d97fb6d7-20e4-493c-b86e-87db99ce6d91"/>
+		</element>
+		<element kind="line" uuid="d16ec9a0-21e8-4370-96a8-f4bd77a564b0" x="-134" y="24" width="1305" height="1"/>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<element kind="rectangle" uuid="c619b355-8e70-439e-bbee-62ce26875639" x="-133" y="0" width="1308" height="15" forecolor="rgba(0, 0, 0, 0.0)" backcolor="rgba(207, 207, 207, 0.6745098)">
+				<printWhenExpression><![CDATA[$V{REPORT_COUNT} % 2 != 0]]></printWhenExpression>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="ab872342-7233-4a1d-aed2-fc3b13819df4" x="0" y="0" width="110" height="15" fontSize="8.0" blankWhenNull="true">
+				<expression><![CDATA[$F{fazenda}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="67f500c5-cd94-460a-8f43-295a27864d1e"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="82d58e10-d841-4b51-9f78-d7b488381f19" x="110" y="0" width="42" height="15" fontSize="8.0" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{manejo}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="52d82d4a-3f71-4048-bb99-17aab1318ae0"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="0231ab92-5b13-4840-87e1-6a793795a71d" x="152" y="0" width="50" height="15" fontSize="8.0" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{idv}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9736ef43-dc25-4a01-a0ed-ebb2ab6c3f7f"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="0f5d01d5-3773-4a71-b728-b6394591c840" x="280" y="0" width="54" height="15" fontSize="8.0" blankWhenNull="true">
+				<expression><![CDATA[$F{raca}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1a89df81-4694-48b7-b1ef-b368f167b862"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="0bfb47be-fea0-4ff8-aa8c-1b514c0a2a2f" x="327" y="0" width="68" height="15" fontSize="8.0" pattern="dd/MM/YY" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{data_nascimento}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="99513750-2b3d-4fba-9414-bb30405fa1a4"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="3551fa8a-fdcf-44ec-80b5-7cb92f71fcab" x="426" y="0" width="70" height="15" fontSize="8.0" blankWhenNull="true">
+				<expression><![CDATA[$F{pai}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f1d4e506-583b-4e63-bbbe-60a33a0866ce"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="a5564b65-9283-46f7-8b86-bb94fed5416a" x="496" y="0" width="44" height="15" fontSize="8.0" pattern="##00;###0.###" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{mae}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ceef0911-61e4-4cb8-8117-3adc948000d7"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="96a56799-0b36-4e7f-8b5c-fc5ea3364780" x="747" y="0" width="64" height="15" fontSize="8.0" pattern="dd/MM/yyyy" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{data_desmama}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2682979a-a17e-41c7-8e34-e8099b8ff0c6"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="7bce7eaa-3d55-4d13-a32b-54cc008f57f0" x="903" y="0" width="68" height="15" fontSize="8.0" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{dias_ate_desmama}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2701b89c-4613-4ff4-9fbd-1b0fd3bc9095"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="bedc24f7-4c44-4cf0-98bb-26b36253ee13" x="813" y="0" width="80" height="15" fontSize="8.0" pattern="##00;###0.###" blankWhenNull="true" printRepeatedValues="false" hTextAlign="Right">
+				<expression><![CDATA[$F{meses_ate_desmama}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="94e19d11-b548-4d2a-ae58-6f743641e053"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="13ee3870-31f7-41b3-b22d-b71e26c90780" x="687" y="0" width="60" height="15" fontSize="8.0" pattern="#,#00.00" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{peso_final}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="91cd08a9-fefe-4f87-951a-7f4dc06eb228"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="4409b0fe-7c02-4c90-8f75-b23d378c4b4c" x="971" y="0" width="32" height="15" fontSize="8.0" pattern="#,##0.###;(#,##0.###-)" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{gmd_ate_desmama}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="51ceedd4-2bdb-41a6-9131-3f6c4ac19df6"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="5f5092d5-7cd7-45e0-adb4-1658e2e84316" x="1010" y="0" width="74" height="15" fontSize="8.0" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{dias_previsto}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="822bebaf-2649-4f80-9c23-4153f0b73f67"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="d8fe530e-05ff-4dc5-9ccf-5569381ed540" x="1096" y="0" width="60" height="15" fontSize="8.0" pattern="#,#00.00" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{peso_ajustado}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="33214c23-f672-4631-a735-4790c0efc90f"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="a1cfbf9f-101a-4030-ae5b-150dfb1b9e08" x="557" y="0" width="70" height="15" fontSize="8.0" blankWhenNull="true">
+				<expression><![CDATA[$F{categoria_matriz}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a93afe10-24b7-4e3b-b0d4-a5bebf23aabb"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="476a4376-35a0-4c08-ac79-5d7578855bef" x="621" y="0" width="60" height="15" fontSize="8.0" pattern="#,#00.00" blankWhenNull="true" hTextAlign="Right">
+				<expression><![CDATA[$F{peso_inicial}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d97fb6d7-20e4-493c-b86e-87db99ce6d91"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="736e26b3-a426-4a8f-998f-71c6eba1a148" x="223" y="0" width="57" height="15" fontSize="8.0">
+				<expression><![CDATA[$F{sexo}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8a22e2f2-3e68-48ae-b6f1-a588c0544a61"/>
+			</element>
+		</band>
+	</detail>
+</jasperReport>
