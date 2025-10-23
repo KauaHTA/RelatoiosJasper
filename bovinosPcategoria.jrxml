@@ -1,4 +1,4 @@
-<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<!-- Created with Jaspersoft Studio version 7.0.3.final utlizzo versione della libreria JasperReports7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
 <jasperReport name="bovinosPcategoria" language="java" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6d4c1a59-242f-466d-916d-c0da136f5992">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="FazendaGT"/>
@@ -160,7 +160,7 @@ ORDER BY a.sexo, b.descricao
 	</title>
 	<pageHeader height="29">
 		<element kind="rectangle" uuid="ff21767b-fe27-4e2b-abd4-b3f585dd7c84" x="-30" y="3" width="870" height="23" forecolor="rgba(0, 0, 0, 0.0)" backcolor="rgba(207, 207, 207, 0.6745098)"/>
-		<element kind="textField" uuid="503b671e-7843-41ba-9351-97e55bae4055" x="60" y="3" width="52" height="18" evaluationTime="Report" pattern="#,##0.###;(#,##0.###-)" bold="false" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="textField" uuid="503b671e-7843-41ba-9351-97e55bae4055" x="60" y="3" width="149" height="18" evaluationTime="Report" pattern="#,##0.###;(#,##0.###-)" bold="false" hTextAlign="Left" vTextAlign="Middle">
 			<expression><![CDATA[$V{qtde1}]]></expression>
 		</element>
 		<element kind="textField" uuid="2ba56933-ba38-400c-95bd-ffad3f7a3d45" x="289" y="3" width="62" height="20" evaluationTime="Report" pattern="#,#00.00" bold="false" hTextAlign="Left" vTextAlign="Middle">
