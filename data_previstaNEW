@@ -100,7 +100,7 @@ order by
 						<cellContents mode="Opaque" style="Crosstab_CT">
 							<staticText>
 								<reportElement x="0" y="0" width="120" height="20" forecolor="#FFFFFF" uuid="c5e29d73-b113-4764-a374-35a347aa2db9"/>
-								<text><![CDATA[Total cod_fracao]]></text>
+								<text><![CDATA[Total ]]></text>
 							</staticText>
 						</cellContents>
 					</crosstabTotalRowHeader>
