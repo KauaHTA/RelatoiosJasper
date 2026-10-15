@@ -1,0 +1,911 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ordem de compra" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="10afe98d-eb61-48b6-87da-9401ec2d849d">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter1.xml"/>
+	<parameter name="id_ordem" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[WITH
+PARCELAS AS (
+SELECT ID_ORDEM,
+STRING_AGG(
+TO_CHAR(DATA_VENCIMENTO, 'DD/MM/YYYY'),
+E'\n' ORDER BY DATA_VENCIMENTO
+) AS PARCELAS
+FROM XOC_PARCELA
+GROUP BY ID_ORDEM
+),
+DRE AS (
+SELECT A.ID_ORDEM,
+STRING_AGG(
+COALESCE(B.NOME, '') ||
+' | CCusto: ' || COALESCE(D.DESCRICAO, '') ||
+' | Conta: ' || COALESCE(E.DESCR_PATH, '') ||
+' | Valor: ' || COALESCE(TO_CHAR(A.VALOR, 'FM999G999G990D00'), ''),
+E'\n'
+) AS DRE
+FROM XOC_ORDEM_DRE A
+LEFT JOIN EMPRESA B ON B.ID_EMPRESA = A.ID_EMPRESA
+LEFT JOIN XDE_CCUSTO D ON D.ID_CCUSTO = A.ID_CCUSTO
+LEFT JOIN VW_XDE_CONTA E ON E.ID_CONTA = A.ID_CONTA
+GROUP BY A.ID_ORDEM
+),
+CONSUMOS AS (
+SELECT A.ID_ORDEM,
+STRING_AGG(
+COALESCE(A.DESCRICAO, '') ||
+' | Qtde: ' || COALESCE(A.QTDE::TEXT, '') ||
+' | Unitário: ' || COALESCE(A.VALOR_UNITARIO::TEXT, '') ||
+' | Total: ' || COALESCE(A.VALOR_TOTAL::TEXT, '') ||
+' | Un.: ' || COALESCE(B.UN, ''),
+E'\n' ORDER BY A.DESCRICAO
+) AS CONSUMOS
+FROM XOC_CONSUMO A
+INNER JOIN XGP_UNIDADE B ON B.ID_UNIDADE = A.ID_UNIDADE
+GROUP BY A.ID_ORDEM
+),
+SERVICOS AS (
+SELECT A.ID_ORDEM,
+STRING_AGG(
+COALESCE(A.DESCRICAO, '') ||
+' | Item: ' || COALESCE(B.DESCRICAO, '') ||
+' | Qtde: ' || COALESCE(A.QTDE::TEXT, '') ||
+' | Unitário: ' || COALESCE(A.VALOR_UNITARIO::TEXT, '') ||
+' | Desconto: ' || COALESCE(A.VALOR_DESCONTO::TEXT, '') ||
+' | Total: ' || COALESCE(A.VALOR_TOTAL::TEXT, '') ||
+' | Acordado: ' || COALESCE(A.VALOR_ACORDADO::TEXT, ''),
+E'\n' ORDER BY A.DESCRICAO
+) AS SERVICOS
+FROM XOC_SERVICO A
+INNER JOIN XGP_ITEM B ON B.ID_ITEM = A.ID_ITEM
+GROUP BY A.ID_ORDEM
+),
+PRODUTOS AS (
+SELECT A.ID_ORDEM,
+STRING_AGG(
+COALESCE(B.DESCRICAO, '') ||
+' | Qtde: ' || COALESCE(A.QTDE::TEXT, '') ||
+' | Un.: ' || COALESCE(C.UN, '') ||
+' | Unitário: ' || COALESCE(A.VALOR_UNITARIO::TEXT, '') ||
+' | Desconto: ' || COALESCE(A.VALOR_DESCONTO::TEXT, '') ||
+' | Total: ' || COALESCE(A.VALOR_TOTAL::TEXT, '') ||
+' | Frete: ' || COALESCE(A.VALOR_FRETE::TEXT, '') ||
+' | Atendida: ' || COALESCE(A.QTDE_ATENDIDA::TEXT, ''),
+E'\n' ORDER BY B.DESCRICAO
+) AS PRODUTOS
+FROM XOC_PRODUTO A
+INNER JOIN XGP_ITEM B ON B.ID_ITEM = A.ID_ITEM
+INNER JOIN XGP_UNIDADE C ON C.ID_UNIDADE = A.ID_UNIDADE
+GROUP BY A.ID_ORDEM
+),
+CONTATOS AS (
+SELECT A.ID_PESSOA,
+STRING_AGG(
+COALESCE(A.NOME, '') ||
+CASE WHEN A.CELULAR IS NOT NULL
+THEN ' | Celular: ' || A.DDD_CELULAR || '-' || A.CELULAR
+ELSE ''
+END ||
+CASE WHEN A.TELEFONE IS NOT NULL
+THEN ' | Telefone: ' || A.DDD_TELEFONE || '-' || A.TELEFONE
+ELSE ''
+END ||
+CASE WHEN A.EMAIL IS NOT NULL
+THEN ' | E-mail: ' || A.EMAIL
+ELSE ''
+END,
+E'\n' ORDER BY A.NOME
+) AS CONTATOS
+FROM XPE_CONTATO A
+GROUP BY A.ID_PESSOA
+),
+SERVICO_QTDE AS (
+SELECT ID_ORDEM, MAX(QTDE) AS QTDE_PRODUTO
+FROM XOC_SERVICO
+GROUP BY ID_ORDEM
+)
+SELECT
+A.ID_ORDEM,
+A.ID_COND_PAGTO,
+A.ID_OPER_COMPRA,
+A.ID_OPERACAO,
+A.ID_TAREFA,
+A.ID_PESSOA,
+A.DESCRICAO,
+A.NOME_FORNECEDOR,
+A.FONE_FORNEC,
+A.TIPO_PIX,
+A.PIX_FOR,
+A.VALOR_FRETE,
+A.VALOR_PRODUTO,
+A.VALOR_SERVICO,
+A.VALOR_TOTAL,
+A.USUARIO_LIBEROU,
+A.DATA_ORDEM AS DATA_LIBEROU,
+A.DEFINIR_PARC,
+A.STATUS,
+A.USUARIO_CREATED,
+A.DATA_CREATED,
+A.USUARIO_CHANGED,
+A.DATA_CHANGED,
+A.ID_CONTATO,
+A.DATA_ORDEM,
+A.ID_INDICE,
+A.CONTRATO,
+A.DATA_EMISSAO,
+A.DATA_INICIO,
+A.DATA_VENCIMENTO,
+A.DIA_VENCIMENTO,
+A.DATA_ENTREGA_I,
+A.DATA_ENTREGA_F,
+A.TIPO_FOR,
+A.ID_EMPRESA,
+A.ID_ANEXO,
+A.DATA_TERMINO,
+A.DIAS_ENTRADA,
+A.DIAS_INTERVALO,
+A.QTDE_PARCELA,
+A.VALOR_ENTRADA,
+F.DESCRICAO AS FORMA_DE_PAGAMENTO,
+cdd.DESCRICAO AS CIDADE_EMPRESA,
+cdd_fornecedor.DESCRICAO AS CIDADE_FORNECEDOR,
+A.ID_PORTADOR,
+A.ID_NATUREZA,
+A.ID_FORMA_PAGTO,
+A.ID_ITEM,
+A.TIPO_FRETE,
+A.FORMA_PAGTO,
+B.DESCRICAO AS DESCR_TAREFA,
+C.DESCRICAO AS DESCR_OPERACAO,
+D.NOME AS NOME_PESSOA,
+D.NOME_FANTASIA,
+D.COD_CLIENTE,
+D.EMAIL AS EMAIL_PESSOA,
+D.INSCRICAO_ESTADUAL,
+D.PRODUTOR_RURAL,
+
+uf.CEP,
+uf.RUA,
+E.NOME,
+est.UF AS NOME_ESTADO,
+EP.NOME AS NOME_EMPRESA_PESSOA,
+EP.NOME_FANTASIA AS NOME_FANTASIA_EMPRESA,
+EP.COD_CLIENTE AS COD_CLIENTE_EMPRESA,
+EP.EMAIL AS EMAIL_EMPRESA,
+EP.INSCRICAO_ESTADUAL AS INSCRICAO_ESTADUAL_EMPRESA,
+EP.PRODUTOR_RURAL AS PRODUTOR_RURAL_EMPRESA,
+uf_empresa.CEP AS CEP_EMPRESA,
+uf_empresa.RUA AS RUA_EMPRESA,
+est_empresa.UF AS NOME_ESTADO_EMPRESA,
+XOP.data_vencimento as data_de_vecimento,
+XOP.valor as valor_total_all,
+XP.QTDE,
+XP.VALOR_UNITARIO,
+XP.VALOR_TOTAL as aaaa ,
+XP.QTDE_ATENDIDA,
+XI.DESCRICAO AS DESCRICAO_ITEM,
+UF.inscricao_estadual as frn_ie,
+UF_EMPRESA.inscricao_estadual as emp_ie,
+XSS.DESCRICAO as DESCRICAO_SERVICO,
+XSS.VALOR_UNITARIO as VALOR_UN_SERVICO,
+CASE
+WHEN A.TIPO_FOR = 'C'
+THEN D.NOME || COALESCE('/' || D.NOME_FANTASIA, '')
+ELSE A.NOME_FORNECEDOR
+END AS NOME_FORNECEDOR_CALC,
+E.APELIDO AS APELIDO_EMPRESA,
+F.DESCRICAO AS DESCR_FORMA_PAGTO,
+G.DESCRICAO AS DESCR_CATEGORIA,
+H.DESCRICAO AS DESCR_GRUPO,
+J.CONTATOS,
+P.PARCELAS,
+R.DRE,
+CO.CONSUMOS,
+S.SERVICOS,
+PR.PRODUTOS,
+SQ.QTDE_PRODUTO
+FROM XOC_ORDEM A
+LEFT JOIN XTD_TAREFA B ON B.ID_TAREFA = A.ID_TAREFA
+LEFT JOIN XOC_OPERACAO C ON C.ID_OPERACAO = A.ID_OPERACAO
+LEFT JOIN XGP_PESSOA D ON D.ID_PESSOA = A.ID_PESSOA
+LEFT JOIN EMPRESA E ON E.ID_EMPRESA = A.ID_EMPRESA
+LEFT JOIN XGP_PESSOA EP ON EP.ID_PESSOA = E.ID_PESSOA
+LEFT JOIN XOC_FORMA_PAGTO F ON F.ID_FORMA_PAGTO = A.ID_FORMA_PAGTO
+LEFT JOIN XPE_CATEGORIA G ON G.ID_CATEGORIA = D.ID_CATEGORIA
+LEFT JOIN XPE_GRUPO H ON H.ID_GRUPO = D.ID_GRUPO
+LEFT JOIN CONTATOS J ON J.ID_PESSOA = A.ID_PESSOA
+LEFT JOIN PARCELAS P ON P.ID_ORDEM = A.ID_ORDEM
+LEFT JOIN DRE R ON R.ID_ORDEM = A.ID_ORDEM
+LEFT JOIN CONSUMOS CO ON CO.ID_ORDEM = A.ID_ORDEM
+LEFT JOIN SERVICOS S ON S.ID_ORDEM = A.ID_ORDEM
+LEFT JOIN PRODUTOS PR ON PR.ID_ORDEM = A.ID_ORDEM
+LEFT JOIN SERVICO_QTDE SQ ON SQ.ID_ORDEM = A.ID_ORDEM
+LEFT JOIN XOC_PRODUTO XP ON XP.ID_ORDEM = A.ID_ORDEM
+LEFT JOIN XOC_PARCELA XOP ON XOP.ID_ORDEM = A.ID_ORDEM
+LEFT JOIN XGP_ITEM XI ON XI.ID_ITEM = XP.ID_ITEM
+LEFT JOIN XOC_SERVICO XSS ON XSS.ID_ORDEM = A.ID_ORDEM
+LEFT JOIN LATERAL (
+SELECT X.*
+FROM XPE_ENDERECO X
+WHERE X.ID_PESSOA = A.ID_PESSOA
+AND X.ATIVO = 'S'
+ORDER BY X.ID_ENDERECO
+LIMIT 1
+) uf ON TRUE
+LEFT JOIN ESTADO est ON est.ID_UF = uf.ID_UF
+LEFT JOIN CIDADE cdd_fornecedor ON cdd_fornecedor.ID_CIDADE = uf.ID_CIDADE
+LEFT JOIN LATERAL (
+SELECT X.*
+FROM XPE_ENDERECO X
+WHERE X.ID_PESSOA = EP.ID_PESSOA
+AND X.ATIVO = 'S'
+ORDER BY X.ID_ENDERECO
+LIMIT 1
+) uf_empresa ON TRUE
+LEFT JOIN ESTADO est_empresa ON est_empresa.ID_UF = uf_empresa.ID_UF
+LEFT JOIN CIDADE cdd ON cdd.ID_CIDADE = uf_empresa.ID_CIDADE
+WHERE A.ID_ORDEM = $P{id_ordem}]]>
+	</queryString>
+	<field name="id_ordem" class="java.lang.Integer"/>
+	<field name="id_cond_pagto" class="java.lang.Integer"/>
+	<field name="id_oper_compra" class="java.lang.Integer"/>
+	<field name="id_operacao" class="java.lang.Integer"/>
+	<field name="id_tarefa" class="java.lang.Integer"/>
+	<field name="id_pessoa" class="java.lang.Integer"/>
+	<field name="descricao" class="java.lang.String"/>
+	<field name="nome_fornecedor" class="java.lang.String"/>
+	<field name="fone_fornec" class="java.lang.Integer"/>
+	<field name="tipo_pix" class="java.lang.String"/>
+	<field name="pix_for" class="java.lang.String"/>
+	<field name="valor_frete" class="java.math.BigDecimal"/>
+	<field name="valor_produto" class="java.math.BigDecimal"/>
+	<field name="valor_servico" class="java.math.BigDecimal"/>
+	<field name="valor_total" class="java.math.BigDecimal"/>
+	<field name="usuario_liberou" class="java.lang.String"/>
+	<field name="data_liberou" class="java.sql.Date"/>
+	<field name="definir_parc" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="usuario_created" class="java.lang.String"/>
+	<field name="data_created" class="java.sql.Timestamp"/>
+	<field name="usuario_changed" class="java.lang.String"/>
+	<field name="data_changed" class="java.sql.Timestamp"/>
+	<field name="id_contato" class="java.lang.Integer"/>
+	<field name="data_ordem" class="java.sql.Date"/>
+	<field name="id_indice" class="java.lang.Integer"/>
+	<field name="contrato" class="java.lang.String"/>
+	<field name="data_emissao" class="java.sql.Date"/>
+	<field name="data_inicio" class="java.sql.Date"/>
+	<field name="data_vencimento" class="java.sql.Date"/>
+	<field name="dia_vencimento" class="java.lang.Integer"/>
+	<field name="data_entrega_i" class="java.sql.Date"/>
+	<field name="data_entrega_f" class="java.sql.Date"/>
+	<field name="tipo_for" class="java.lang.String"/>
+	<field name="id_empresa" class="java.lang.Integer"/>
+	<field name="id_anexo" class="java.lang.Integer"/>
+	<field name="data_termino" class="java.sql.Date"/>
+	<field name="dias_entrada" class="java.lang.Integer"/>
+	<field name="dias_intervalo" class="java.lang.Integer"/>
+	<field name="qtde_parcela" class="java.lang.Integer"/>
+	<field name="valor_entrada" class="java.math.BigDecimal"/>
+	<field name="forma_de_pagamento" class="java.lang.String"/>
+	<field name="cidade_empresa" class="java.lang.String"/>
+	<field name="cidade_fornecedor" class="java.lang.String"/>
+	<field name="id_portador" class="java.lang.Integer"/>
+	<field name="id_natureza" class="java.lang.Integer"/>
+	<field name="id_forma_pagto" class="java.lang.Integer"/>
+	<field name="id_item" class="java.lang.Integer"/>
+	<field name="tipo_frete" class="java.lang.String"/>
+	<field name="forma_pagto" class="java.lang.String"/>
+	<field name="descr_tarefa" class="java.lang.String"/>
+	<field name="descr_operacao" class="java.lang.String"/>
+	<field name="nome_pessoa" class="java.lang.String"/>
+	<field name="nome_fantasia" class="java.lang.String"/>
+	<field name="cod_cliente" class="java.lang.String"/>
+	<field name="email_pessoa" class="java.lang.String"/>
+	<field name="inscricao_estadual" class="java.lang.String"/>
+	<field name="produtor_rural" class="java.lang.String"/>
+	<field name="cep" class="java.lang.String"/>
+	<field name="rua" class="java.lang.String"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="nome_estado" class="java.lang.String"/>
+	<field name="nome_empresa_pessoa" class="java.lang.String"/>
+	<field name="nome_fantasia_empresa" class="java.lang.String"/>
+	<field name="cod_cliente_empresa" class="java.lang.String"/>
+	<field name="email_empresa" class="java.lang.String"/>
+	<field name="inscricao_estadual_empresa" class="java.lang.String"/>
+	<field name="produtor_rural_empresa" class="java.lang.String"/>
+	<field name="cep_empresa" class="java.lang.String"/>
+	<field name="rua_empresa" class="java.lang.String"/>
+	<field name="nome_estado_empresa" class="java.lang.String"/>
+	<field name="data_de_vecimento" class="java.sql.Date"/>
+	<field name="valor_total_all" class="java.math.BigDecimal"/>
+	<field name="qtde" class="java.math.BigDecimal"/>
+	<field name="valor_unitario" class="java.math.BigDecimal"/>
+	<field name="aaaa" class="java.math.BigDecimal"/>
+	<field name="qtde_atendida" class="java.math.BigDecimal"/>
+	<field name="descricao_item" class="java.lang.String"/>
+	<field name="frn_ie" class="java.lang.String"/>
+	<field name="emp_ie" class="java.lang.String"/>
+	<field name="descricao_servico" class="java.lang.String"/>
+	<field name="valor_un_servico" class="java.math.BigDecimal"/>
+	<field name="nome_fornecedor_calc" class="java.lang.String"/>
+	<field name="apelido_empresa" class="java.lang.String"/>
+	<field name="descr_forma_pagto" class="java.lang.String"/>
+	<field name="descr_categoria" class="java.lang.String"/>
+	<field name="descr_grupo" class="java.lang.String"/>
+	<field name="contatos" class="java.lang.String"/>
+	<field name="parcelas" class="java.lang.String"/>
+	<field name="dre" class="java.lang.String"/>
+	<field name="consumos" class="java.lang.String"/>
+	<field name="servicos" class="java.lang.String"/>
+	<field name="produtos" class="java.lang.String"/>
+	<field name="qtde_produto" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="73" splitType="Stretch">
+			<staticText>
+				<reportElement x="180" y="0" width="180" height="30" uuid="04c39f91-a022-4267-bc5b-a98c6ad68261"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ORDEM DE COMPRA - ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="360" y="0" width="38" height="30" uuid="e2a27aa5-2eb7-4c8f-9379-b4c1a66d2ce5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_ordem}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="10" y="-8" width="65" height="61" uuid="851b438b-6cb7-4504-b5c5-ad2c50df9b77"/>
+				<imageExpression><![CDATA["C:/Users/kauaz/Downloads/Logo Marca Farm.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="273" splitType="Stretch">
+			<rectangle>
+				<reportElement mode="Opaque" x="0" y="70" width="560" height="20" forecolor="#666666" backcolor="#D4D4D4" uuid="59e13645-883b-4a7e-96f5-0af794ca7a0a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="20" width="560" height="40" forecolor="rgba(0, 0, 0, 0.34901962)" uuid="3e98bb7f-b9fe-4b31-894d-470793bee947"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="90" width="560" height="69" forecolor="rgba(0, 0, 0, 0.34901962)" uuid="bc2c0314-97b7-49db-898e-e6a07dcf44ba"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="0" y="0" width="560" height="20" forecolor="#666666" backcolor="#D4D4D4" uuid="9b2167fe-5745-44f0-997a-1d70ce9aacd8"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="10" y="0" width="100" height="20" uuid="4df36369-b440-427d-9e29-87b705bffd5d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DADOS DA ORDEM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="20" width="100" height="20" uuid="792330c1-af6e-4633-ab88-d3da30f54e9c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descrição da Ordem]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="20" width="100" height="20" uuid="620a23d6-949e-45cf-8bcd-aebf539b33e3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data de Ordem 
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="70" width="148" height="20" uuid="03d478f7-f543-4269-a95e-d9a861cf25ee"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DADOS DO SOLICITANTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="90" width="100" height="15" uuid="26088339-4432-4790-9689-1314eadc9600"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Razão Social]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="119" width="100" height="15" uuid="9b3cae16-7f72-41c0-acc0-48d655d43e14"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Endereço]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="90" width="100" height="15" uuid="f63fd896-8d5c-452d-ad96-4e938d677bfd"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CNPJ/CPF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="120" width="100" height="15" uuid="a3def508-13f7-4ca3-9dca-bd78233b9ba2"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cidade / UF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="434" y="90" width="120" height="15" uuid="7807e33a-6bd1-4ea8-b770-213b437440d1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Inscrição Estadual]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="434" y="119" width="120" height="15" uuid="848d27cd-26dc-4fd8-a20c-0cef156c3665"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CEP]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Opaque" x="0" y="170" width="560" height="20" forecolor="#666666" backcolor="#D4D4D4" uuid="12ac2953-0efc-453d-b497-e7ca19ce32f8"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="10" y="169" width="148" height="20" uuid="5ecaf3e6-c394-4477-9fec-2bbf18c76b29"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DADOS DO FORNECEDOR]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement positionType="FixRelativeToBottom" mode="Transparent" x="0" y="190" width="560" height="70" forecolor="rgba(0, 0, 0, 0.34901962)" uuid="fe0e569d-8c3a-4d7f-8c28-fdb93957b8b4"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="10" y="191" width="100" height="15" uuid="31fa028c-513b-43bf-83df-aee8071e2ea8">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Razão Social]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="222" width="100" height="15" uuid="1cadd852-9852-4bd6-8b2e-4c6b829eeb5c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Endereço]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="191" width="160" height="15" uuid="7853822f-162f-49d5-929a-c5720d17437b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CNPJ/CPF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="222" width="160" height="15" uuid="b136bfcb-a16d-430d-8939-9a9d529b658e"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cidade / UF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="434" y="191" width="120" height="15" uuid="057b8bcf-6189-4344-b45d-ac5d6ef6a5a3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Inscrição Estadual]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="434" y="222" width="120" height="15" uuid="52eefd8c-b120-4384-b9a2-c54e541dbc06"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CEP]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="10" y="40" width="240" height="20" uuid="1c813707-30f5-4c07-b77a-9cb32d997426"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="420" y="40" width="120" height="20" uuid="ff99a87b-1346-4cf3-9503-30ad45764ce1"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{data_liberou}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="10" y="207" width="240" height="15" uuid="0b882cfc-9802-4b00-a71e-36c0ea5b6eb6"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome_pessoa}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="260" y="207" width="160" height="15" uuid="4a2ece16-0545-459b-b8fb-e04637f2f5d8"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cod_cliente} == null ? null :
+(
+    $F{cod_cliente}.toString().replaceAll("\\D", "").length() == 11
+    ? $F{cod_cliente}.toString().replaceAll("\\D", "")
+        .replaceAll("^(\\d{3})(\\d{3})(\\d{3})(\\d{2})$", "$1.$2.$3-$4")
+    : $F{cod_cliente}.toString().replaceAll("\\D", "").length() == 14
+        ? $F{cod_cliente}.toString().replaceAll("\\D", "")
+            .replaceAll("^(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})$", "$1.$2.$3/$4-$5")
+        : $F{cod_cliente}.toString()
+)]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="434" y="207" width="120" height="15" uuid="dcf9fae9-c903-42cb-8e1a-c83f69ea5ad1"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{frn_ie}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="260" y="237" width="160" height="15" uuid="8d0b3e10-a6ba-4014-adad-83093e53e261"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{cidade_fornecedor} == null ? "" : $F{cidade_fornecedor})
++ (($F{cidade_fornecedor} != null && $F{nome_estado} != null) ? " - " : "")
++ ($F{nome_estado} == null ? "" : $F{nome_estado})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="434" y="237" width="120" height="15" uuid="3b821407-78aa-4eb2-84b4-68216a5623a8"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cep} == null ? "" : $F{cep}.replaceAll("\\D", "").replaceAll("(\\d{2})(\\d{3})(\\d{3})", "$1.$2-$3")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="10" y="237" width="240" height="15" uuid="9c7fc1f9-ad00-4f69-b092-5a07ad05d496"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rua}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="10" y="105" width="240" height="14" uuid="99db35ac-9ac8-4668-961f-64052012492f"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome_empresa_pessoa}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="260" y="105" width="130" height="15" uuid="dec6d0e1-a013-4d4f-b1de-95618448edbe"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cod_cliente_empresa} == null ? null :
+(
+    $F{cod_cliente_empresa}.toString().replaceAll("\\D", "").length() == 11
+    ? $F{cod_cliente_empresa}.toString().replaceAll("\\D", "")
+        .replaceAll("^(\\d{3})(\\d{3})(\\d{3})(\\d{2})$", "$1.$2.$3-$4")
+    : $F{cod_cliente_empresa}.toString().replaceAll("\\D", "").length() == 14
+        ? $F{cod_cliente_empresa}.toString().replaceAll("\\D", "")
+            .replaceAll("^(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})$", "$1.$2.$3/$4-$5")
+        : $F{cod_cliente_empresa}.toString()
+)]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="434" y="105" width="120" height="14" uuid="0e2459f5-ea51-4b7e-ab17-3a12a3121ba2"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_ie}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="434" y="134" width="120" height="15" uuid="623f8ee5-2f62-4e56-9c86-630dd7378c12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cep_empresa} == null ? "" : $F{cep_empresa}.replaceAll("\\D", "").replaceAll("(\\d{2})(\\d{3})(\\d{3})", "$1.$2-$3")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="10" y="134" width="240" height="15" uuid="f732716c-da74-4b4f-b657-4ae10cf05265"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rua_empresa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="260" y="135" width="160" height="14" uuid="bb8d201b-b828-45d9-96fe-e5e40242e54a"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{cidade_empresa} == null ? "" : $F{cidade_empresa})
++ (($F{cidade_empresa} != null && $F{nome_estado_empresa} != null) ? " - " : "")
++ ($F{nome_estado_empresa} == null ? "" : $F{nome_estado_empresa})]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="145" splitType="Stretch">
+			<rectangle>
+				<reportElement positionType="FixRelativeToBottom" mode="Transparent" x="0" y="43" width="560" height="39" forecolor="rgba(0, 0, 0, 0.34901962)" uuid="f38f27e0-bfe0-4ac9-af8e-d222172aa432"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineColor="#030000"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="1" y="119" width="559" height="21" forecolor="#666666" backcolor="#D4D4D4" uuid="f777be3f-c497-496f-9250-31f6c2f5a170"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="0" y="23" width="560" height="20" forecolor="#666666" backcolor="#D4D4D4" uuid="654c2753-a3ed-4281-ac6b-37990966b629"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="9" y="3" width="150" height="20" uuid="7db22a36-f46f-46a4-9540-2b9f16e7900f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONDIÇÔES DE PAGAMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="23" width="100" height="20" uuid="6da08447-4142-4d4d-9365-eabd3646681e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Forma de Pagamento ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="155" y="23" width="100" height="20" uuid="7d7d222a-f2f4-4653-be49-662c3f51069e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Parcela]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="311" y="23" width="100" height="20" uuid="826a07e5-b2ba-4587-86d7-ba7db92af653"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vencimento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="463" y="23" width="80" height="20" uuid="87b5e6f1-2e0b-423b-a7df-80700706c494"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="155" y="53" width="100" height="20" uuid="86b9d354-69f7-42f6-afe4-a261c2e6014a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtde_parcela}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="311" y="53" width="98" height="20" uuid="c418f1b4-4411-4b74-813e-5507bb8499de"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{data_de_vecimento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="463" y="119" width="80" height="21" uuid="5ca0b0f7-31ac-4d3a-b70e-11eb3176f031"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Ordem(R$)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="119" width="70" height="21" uuid="a8d2975b-e655-4758-8aeb-acfa96509b8f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor unitário(R$)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="173" y="119" width="54" height="21" uuid="34930ded-cc7d-4c58-8c2b-d3519a724c27"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Atendido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="103" y="119" width="66" height="21" uuid="76b8b9fa-ef5c-4247-9c3f-ec99236a0ee9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quantidade]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="119" width="99" height="20" uuid="20138adb-4ae5-4c1a-b800-5d799c852337"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Item]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="119" width="560" height="1" uuid="a84987d8-9bd9-4683-ae30-6bdebad9f8a9"/>
+			</line>
+			<textField>
+				<reportElement x="9" y="52" width="91" height="20" uuid="c4bc480e-63b1-4fb1-8255-f16556b4f609"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{forma_de_pagamento} == null ? "-" : String.valueOf($F{forma_de_pagamento})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="392" y="120" width="65" height="20" uuid="21c94320-81cb-4ce3-95f4-c638dd591ce6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Frete]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="98" width="199" height="20" uuid="73b62326-95ef-40ca-81a3-ed4b5703084c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ITENS DA ORDEM DE COMPRA]]></text>
+			</staticText>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="463" y="53" width="80" height="19" uuid="3b9ea103-2a68-4d92-841c-1bf95eac07dc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_total_all} == null
+? "-"
+: "R$ " + new java.text.DecimalFormat(
+    "#,##0.00",
+    new java.text.DecimalFormatSymbols(
+        new java.util.Locale("pt", "BR")
+    )
+).format($F{valor_total_all})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="305" y="120" width="81" height="21" uuid="469c3cb3-82c5-4916-a998-b69c4a0fac0d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor Produto(R$)]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="38">
+			<textField pattern="#,#0.#;#,#0.#-" isBlankWhenNull="true">
+				<reportElement x="173" y="9" width="55" height="20" uuid="574eff94-7e66-4a69-b573-01b8c2d51a32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtde_atendida} == null
+    ? "-"
+    : new java.text.DecimalFormat(
+        "####.00",
+        new java.text.DecimalFormatSymbols(
+            new java.util.Locale("pt", "BR")
+        )
+    ).format($F{qtde_atendida})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0." isBlankWhenNull="true">
+				<reportElement x="231" y="9" width="69" height="20" uuid="bc894b93-ab2e-4328-ac4f-7554b8ef302b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_unitario} != null
+    ? "R$ " + new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols(new java.util.Locale("pt", "BR"))).format($F{valor_unitario})
+    : ($F{valor_un_servico} != null
+        ? "R$ " + new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols(new java.util.Locale("pt", "BR"))).format($F{valor_un_servico})
+        : "-")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="9" width="99" height="20" uuid="7ae34103-92af-494b-bbb0-7ba8c6fd2627"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descricao_item} != null
+    ? $F{descricao_item}
+    : ($F{descricao_servico} != null
+        ? $F{descricao_servico}
+        : "-")]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="-21" width="1" height="59" uuid="d9563be7-a5f8-4d5c-99b8-8fa8ab09f217"/>
+			</line>
+			<line>
+				<reportElement x="560" y="-20" width="1" height="57" uuid="480459b4-5337-402d-a8c7-1c546c278292"/>
+			</line>
+			<line>
+				<reportElement x="1" y="37" width="560" height="1" uuid="306062df-6b89-45f8-a2df-59a5500058da"/>
+			</line>
+			<textField pattern="#,#0.##;(#,##0.###-)" isBlankWhenNull="true">
+				<reportElement x="103" y="9" width="66" height="20" uuid="4ba43b51-263c-44ca-adf4-855e79ba199b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtde} == null
+    ? "-"
+    : new java.text.DecimalFormat(
+        "####.00",
+        new java.text.DecimalFormatSymbols(
+            new java.util.Locale("pt", "BR")
+        )
+    ).format($F{qtde})]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="463" y="9" width="80" height="21" uuid="622255b1-d68d-46a3-a7b9-29bd5e2f351d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_total_all} == null
+? "-"
+: "R$ " + new java.text.DecimalFormat(
+    "#,##0.00",
+    new java.text.DecimalFormatSymbols(
+        new java.util.Locale("pt", "BR")
+    )
+).format($F{valor_total_all})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="392" y="9" width="65" height="20" uuid="9630abff-6bbb-43b3-9ff2-c85342dc37f7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_frete} == null
+? "-"
+: "R$ " + new java.text.DecimalFormat(
+    "#,##0.00",
+    new java.text.DecimalFormatSymbols(
+        new java.util.Locale("pt", "BR")
+    )
+).format($F{valor_frete})]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.##;¤-#,##0.##" isBlankWhenNull="true">
+				<reportElement x="305" y="9" width="81" height="20" uuid="9f6286fc-7054-4186-a8e6-686788237418"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aaaa} == null
+? "-"
+: "R$ " + new java.text.DecimalFormat(
+    "#,##0.00",
+    new java.text.DecimalFormatSymbols(
+        new java.util.Locale("pt", "BR")
+    )
+).format($F{aaaa})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="160">
+			<line>
+				<reportElement x="48" y="129" width="182" height="1" uuid="cc649b52-2907-4746-bbe9-bb4525af27df"/>
+			</line>
+			<line>
+				<reportElement x="354" y="129" width="177" height="1" uuid="13ef5106-9fa3-4c1d-8bb5-a6405bb4b005"/>
+			</line>
+			<staticText>
+				<reportElement x="390" y="130" width="100" height="30" uuid="20e42193-05d6-4a03-80bc-96a655988b8e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fornecedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="130" width="100" height="30" uuid="3095d4d3-7760-498b-a5c7-58300c1cbf35"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Solicitante ]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>
