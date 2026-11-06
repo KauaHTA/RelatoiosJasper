@@ -1,0 +1,817 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EngordaLotesBaixadosPorPeriodo00021" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="812" leftMargin="15" rightMargin="15" topMargin="15" bottomMargin="15" isSummaryWithPageHeaderAndFooter="true" uuid="ce6a3ae1-9011-42a7-bdad-e9a2eb09df28">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="FazendaGT"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<style name="Base" isDefault="true" forecolor="#2B2B2B" fontName="SansSerif" fontSize="7"/>
+	<style name="Titulo" forecolor="#1F4E3D" fontName="SansSerif" fontSize="15" isBold="true"/>
+	<style name="Subtitulo" forecolor="#6B7B73" fontName="SansSerif" fontSize="7"/>
+	<style name="Emissao" forecolor="#6B7B73" fontName="SansSerif" fontSize="6"/>
+	<style name="FiltroBox" mode="Opaque" forecolor="#1F4E3D" backcolor="#EAF3EE" fontName="SansSerif" fontSize="6.5">
+		<box topPadding="2" leftPadding="8" bottomPadding="2" rightPadding="6">
+			<leftPen lineWidth="2.0" lineColor="#2E7D5B"/>
+		</box>
+	</style>
+	<style name="GrupoCab" mode="Opaque" forecolor="#FFFFFF" backcolor="#1F4E3D" fontName="SansSerif" fontSize="5.5" isBold="true">
+		<box>
+			<rightPen lineWidth="1.0" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="CabColuna" mode="Opaque" forecolor="#FFFFFF" backcolor="#2E7D5B" fontName="SansSerif" fontSize="5.5" isBold="true">
+		<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+			<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="CabColunaDest" style="CabColuna" backcolor="#C98A1B"/>
+	<style name="Celula" mode="Opaque" backcolor="#FFFFFF" fontName="SansSerif" fontSize="6.5">
+		<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="3">
+			<bottomPen lineWidth="0.25" lineColor="#DCE7E0"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}.intValue() % 2 == 0]]></conditionExpression>
+			<style backcolor="#F3F8F5"/>
+		</conditionalStyle>
+	</style>
+	<style name="CelulaForte" style="Celula" forecolor="#1F4E3D" isBold="true"/>
+	<style name="CelulaDest" mode="Opaque" forecolor="#8A5A00" backcolor="#FFF8EA" fontName="SansSerif" fontSize="6.5" isBold="true">
+		<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="3">
+			<bottomPen lineWidth="0.25" lineColor="#F1DDB5"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}.intValue() % 2 == 0]]></conditionExpression>
+			<style backcolor="#FCEFD6"/>
+		</conditionalStyle>
+	</style>
+	<style name="CelulaGanho" style="Celula">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{ganho_peso} != null && $F{ganho_peso}.signum() < 0]]></conditionExpression>
+			<style forecolor="#B3261E" isBold="true"/>
+		</conditionalStyle>
+	</style>
+	<style name="Total" mode="Opaque" forecolor="#FFFFFF" backcolor="#1F4E3D" fontName="SansSerif" fontSize="6" isBold="true">
+		<box leftPadding="2" rightPadding="3"/>
+	</style>
+	<style name="TotalDest" style="Total" backcolor="#C98A1B"/>
+	<style name="CardLabel" mode="Opaque" forecolor="#2E7D5B" backcolor="#EAF3EE" fontName="SansSerif" fontSize="5.5" isBold="true">
+		<box topPadding="2" leftPadding="7">
+			<leftPen lineWidth="2.5" lineColor="#2E7D5B"/>
+		</box>
+	</style>
+	<style name="CardValor" mode="Opaque" forecolor="#1F4E3D" backcolor="#EAF3EE" fontName="SansSerif" fontSize="11" isBold="true">
+		<box leftPadding="7">
+			<leftPen lineWidth="2.5" lineColor="#2E7D5B"/>
+		</box>
+	</style>
+	<style name="CardSub" mode="Opaque" forecolor="#6B7B73" backcolor="#EAF3EE" fontName="SansSerif" fontSize="5.5">
+		<box leftPadding="7" bottomPadding="2">
+			<leftPen lineWidth="2.5" lineColor="#2E7D5B"/>
+		</box>
+	</style>
+	<style name="CardLabelDest" style="CardLabel" forecolor="#8A5A00" backcolor="#FFF3DC">
+		<box topPadding="2" leftPadding="7">
+			<leftPen lineWidth="2.5" lineColor="#C98A1B"/>
+		</box>
+	</style>
+	<style name="CardValorDest" style="CardValor" forecolor="#8A5A00" backcolor="#FFF3DC">
+		<box leftPadding="7">
+			<leftPen lineWidth="2.5" lineColor="#C98A1B"/>
+		</box>
+	</style>
+	<style name="CardSubDest" style="CardSub" forecolor="#8A6A30" backcolor="#FFF3DC">
+		<box leftPadding="7" bottomPadding="2">
+			<leftPen lineWidth="2.5" lineColor="#C98A1B"/>
+		</box>
+	</style>
+	<style name="Rodape" forecolor="#8A8A8A" fontName="SansSerif" fontSize="6"/>
+	<parameter name="P_EMPRESA" class="java.lang.Integer">
+		<parameterDescription><![CDATA[Empresa / Fazenda]]></parameterDescription>
+	</parameter>
+	<parameter name="P_CAMPANHA" class="java.lang.Integer" isForPrompting="false">
+		<parameterDescription><![CDATA[Safra / Campanha]]></parameterDescription>
+	</parameter>
+	<parameter name="P_ESTRATEGIA" class="java.lang.Integer" isForPrompting="false">
+		<parameterDescription><![CDATA[Estrategia]]></parameterDescription>
+	</parameter>
+	<parameter name="P_OPERACAO" class="java.lang.Integer">
+		<parameterDescription><![CDATA[Operacao]]></parameterDescription>
+	</parameter>
+	<parameter name="P_DATA_INICIAL" class="java.util.Date">
+		<parameterDescription><![CDATA[Data Saida Inicial]]></parameterDescription>
+	</parameter>
+	<parameter name="P_DATA_FINAL" class="java.util.Date">
+		<parameterDescription><![CDATA[Data Saida Final]]></parameterDescription>
+	</parameter>
+	<parameter name="P_PROPRIETARIO" class="java.lang.Integer">
+		<parameterDescription><![CDATA[Proprietario]]></parameterDescription>
+	</parameter>
+	<parameter name="P_STATUS_MOV" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["F"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_NATUREZA_OP" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["S"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_TIPO_OP" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["V"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_USUARIO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["SUPORTE"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_SISTEMA" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["GESPEC - Monitor Engorda"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_DATA_EMISSAO" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new java.util.Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:/brsistemas/download/9/gespec/reports/gespec/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_FMT_DEC" class="java.text.DecimalFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new java.text.DecimalFormat("#,##0.00", new java.text.DecimalFormatSymbols(new java.util.Locale("pt", "BR")))]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_FMT_INT" class="java.text.DecimalFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new java.text.DecimalFormat("#,##0", new java.text.DecimalFormatSymbols(new java.util.Locale("pt", "BR")))]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_FMT_DATA" class="java.text.SimpleDateFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy")]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[WITH bx AS (
+    SELECT a.id_animal,
+           a.id_aparte,
+           a.data_entrada,
+           a.data_saida,
+           a.peso_entrada,
+           a.peso_saida,
+           a.qtde_dias,
+           a.custo_animal,
+           a.custo_alimentar,
+           a.custo_operacional,
+           a.custo_sanitario,
+           a.custo_total,
+           e.id_aparte_aux,
+           e.descricao,
+           g.cod_fracao
+      FROM vw_xgp_engorda_lote_bx a
+      JOIN xgp_animal d      ON d.id_animal = a.id_animal
+      LEFT JOIN xgp_aparte e ON e.id_aparte = a.id_aparte
+      LEFT JOIN xgp_fracao g ON g.id_fracao = e.id_fracao
+     WHERE a.data_saida >= CAST($P{P_DATA_INICIAL} AS date)
+       AND a.data_saida <  CAST($P{P_DATA_FINAL} AS date) + 1
+       AND (CAST($P{P_EMPRESA} AS integer)     IS NULL OR d.id_empresa      = $P{P_EMPRESA})
+       AND (CAST($P{P_CAMPANHA} AS integer)    IS NULL OR e.id_campanha     = $P{P_CAMPANHA})
+       AND (CAST($P{P_ESTRATEGIA} AS integer)  IS NULL OR e.id_estrategia   = $P{P_ESTRATEGIA})
+       AND (CAST($P{P_PROPRIETARIO} AS integer) IS NULL OR d.id_proprietario = $P{P_PROPRIETARIO})
+),
+form AS (
+    -- formulas usadas durante toda a vida do lote (nao apenas no periodo de saida)
+    SELECT ap.id_aparte_aux,
+           STRING_AGG(DISTINCT fo.descricao, ', ') AS desc_formulas
+      FROM xgp_agenda_trato agt
+      JOIN xgp_agenda_fab af ON af.id_agenda_fab = agt.id_agenda_fab
+      JOIN xgp_formula fo    ON fo.id_formula    = af.id_formula
+      JOIN xgp_aparte ap     ON ap.id_aparte     = agt.id_aparte
+     WHERE agt.id_aparte IN (SELECT DISTINCT id_aparte FROM bx)
+     GROUP BY ap.id_aparte_aux
+),
+lote AS (
+    SELECT b.id_aparte_aux,
+           b.descricao,
+           MIN(b.data_saida) AS data_saida,
+           CAST(TO_TIMESTAMP(AVG(EXTRACT(EPOCH FROM b.data_entrada))) AS date) AS data_entrada,
+           COUNT(b.id_animal) AS qtde_animais,
+           ROUND(AVG(b.qtde_dias)::numeric, 0) AS qtde_dias,
+           ROUND(AVG(b.peso_entrada)::numeric, 2) AS peso_entrada,
+           ROUND(AVG(b.peso_saida)::numeric, 2) AS peso_saida,
+           ROUND(AVG(b.peso_saida - b.peso_entrada)::numeric, 2) AS ganho_peso,
+           ROUND(SUM(b.peso_saida - b.peso_entrada)::numeric
+                 / NULLIF(SUM(b.qtde_dias), 0), 3) AS gmd,
+           ROUND(SUM(b.peso_saida - b.peso_entrada)::numeric / 30, 2) AS arrobas_produzidas,
+           ROUND(COALESCE(SUM(b.custo_animal), 0)::numeric, 2)      AS valor_compra,
+           ROUND(COALESCE(SUM(b.custo_alimentar), 0)::numeric, 2)   AS custo_alimentar,
+           ROUND(COALESCE(SUM(b.custo_operacional), 0)::numeric, 2) AS custo_operacional,
+           ROUND(COALESCE(SUM(b.custo_sanitario), 0)::numeric, 2)   AS custo_sanitario,
+           ROUND(COALESCE(SUM(b.custo_total), 0)::numeric, 2)       AS custo_total,
+           ROUND(COALESCE(SUM(b.custo_total), 0)::numeric
+                 / NULLIF(COUNT(b.id_animal), 0), 2) AS custo_cabeca,
+           ROUND((COALESCE(SUM(b.custo_alimentar), 0)
+                + COALESCE(SUM(b.custo_operacional), 0)
+                + COALESCE(SUM(b.custo_sanitario), 0))::numeric
+                 / NULLIF(SUM(b.peso_saida - b.peso_entrada)::numeric / 30, 0), 2) AS custo_arroba,
+           STRING_AGG(DISTINCT b.cod_fracao::text, ', ') AS desc_areas,
+           COALESCE(SUM(b.peso_entrada), 0)::numeric               AS sum_peso_entrada,
+           COALESCE(SUM(b.peso_saida), 0)::numeric                 AS sum_peso_saida,
+           COALESCE(SUM(b.qtde_dias), 0)::numeric                  AS sum_dias,
+           COALESCE(SUM(b.peso_saida - b.peso_entrada), 0)::numeric AS sum_ganho
+      FROM bx b
+     GROUP BY b.id_aparte_aux, b.descricao
+)
+SELECT l.*,
+       f.desc_formulas,
+       (SELECT xc.descricao  FROM xgp_campanha xc     WHERE xc.id_campanha     = $P{P_CAMPANHA})    AS nome_campanha,
+       (SELECT emp.nome      FROM empresa emp         WHERE emp.id_empresa     = $P{P_EMPRESA})     AS nome_empresa,
+       (SELECT emp.logo_marca FROM empresa emp        WHERE emp.id_empresa     = $P{P_EMPRESA})     AS logo_marca,
+       (SELECT xe.descricao  FROM xgp_estrategia xe   WHERE xe.id_estrategia   = $P{P_ESTRATEGIA})  AS nome_estrategia,
+       (SELECT xpo.nome      FROM xgp_proprietario xpo WHERE xpo.id_proprietario = $P{P_PROPRIETARIO}) AS nome_proprietario
+  FROM lote l
+  LEFT JOIN form f ON f.id_aparte_aux = l.id_aparte_aux
+ ORDER BY l.data_saida, l.id_aparte_aux]]>
+	</queryString>
+	<field name="id_aparte_aux" class="java.lang.Integer"/>
+	<field name="descricao" class="java.lang.String"/>
+	<field name="data_saida" class="java.sql.Date"/>
+	<field name="data_entrada" class="java.sql.Date"/>
+	<field name="qtde_animais" class="java.lang.Long"/>
+	<field name="qtde_dias" class="java.math.BigDecimal"/>
+	<field name="peso_entrada" class="java.math.BigDecimal"/>
+	<field name="peso_saida" class="java.math.BigDecimal"/>
+	<field name="ganho_peso" class="java.math.BigDecimal"/>
+	<field name="gmd" class="java.math.BigDecimal"/>
+	<field name="arrobas_produzidas" class="java.math.BigDecimal"/>
+	<field name="valor_compra" class="java.math.BigDecimal"/>
+	<field name="custo_alimentar" class="java.math.BigDecimal"/>
+	<field name="custo_operacional" class="java.math.BigDecimal"/>
+	<field name="custo_sanitario" class="java.math.BigDecimal"/>
+	<field name="custo_total" class="java.math.BigDecimal"/>
+	<field name="custo_cabeca" class="java.math.BigDecimal"/>
+	<field name="custo_arroba" class="java.math.BigDecimal"/>
+	<field name="desc_areas" class="java.lang.String"/>
+	<field name="sum_peso_entrada" class="java.math.BigDecimal"/>
+	<field name="sum_peso_saida" class="java.math.BigDecimal"/>
+	<field name="sum_dias" class="java.math.BigDecimal"/>
+	<field name="sum_ganho" class="java.math.BigDecimal"/>
+	<field name="desc_formulas" class="java.lang.String"/>
+	<field name="nome_campanha" class="java.lang.String"/>
+	<field name="nome_empresa" class="java.lang.String"/>
+	<field name="logo_marca" class="java.lang.Object"/>
+	<field name="nome_estrategia" class="java.lang.String"/>
+	<field name="nome_proprietario" class="java.lang.String"/>
+	<variable name="V_QTDE" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtde_animais}]]></variableExpression>
+		<initialValueExpression><![CDATA[Long.valueOf(0L)]]></initialValueExpression>
+	</variable>
+	<variable name="V_SUM_PE" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{sum_peso_entrada}]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="V_SUM_PS" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{sum_peso_saida}]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="V_SUM_DIAS" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{sum_dias}]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="V_SUM_GANHO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{sum_ganho}]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="V_ARROBAS" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{arrobas_produzidas}]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="V_VALOR_COMPRA" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{valor_compra}]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="V_CUSTO_ALIMENTAR" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{custo_alimentar}]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="V_CUSTO_OPERACIONAL" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{custo_operacional}]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="V_CUSTO_SANITARIO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{custo_sanitario}]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="V_CUSTO_TOTAL" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{custo_total}]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="V_PE_MED" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{V_QTDE}.longValue() == 0L ? null : $V{V_SUM_PE}.divide(java.math.BigDecimal.valueOf($V{V_QTDE}.longValue()), 2, java.math.RoundingMode.HALF_UP)]]></variableExpression>
+	</variable>
+	<variable name="V_PS_MED" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{V_QTDE}.longValue() == 0L ? null : $V{V_SUM_PS}.divide(java.math.BigDecimal.valueOf($V{V_QTDE}.longValue()), 2, java.math.RoundingMode.HALF_UP)]]></variableExpression>
+	</variable>
+	<variable name="V_DIAS_MED" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{V_QTDE}.longValue() == 0L ? null : $V{V_SUM_DIAS}.divide(java.math.BigDecimal.valueOf($V{V_QTDE}.longValue()), 0, java.math.RoundingMode.HALF_UP)]]></variableExpression>
+	</variable>
+	<variable name="V_GANHO_MED" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{V_QTDE}.longValue() == 0L ? null : $V{V_SUM_GANHO}.divide(java.math.BigDecimal.valueOf($V{V_QTDE}.longValue()), 2, java.math.RoundingMode.HALF_UP)]]></variableExpression>
+	</variable>
+	<variable name="V_GMD_MED" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{V_SUM_DIAS}.signum() == 0 ? null : $V{V_SUM_GANHO}.divide($V{V_SUM_DIAS}, 3, java.math.RoundingMode.HALF_UP)]]></variableExpression>
+	</variable>
+	<variable name="V_CUSTO_PROD" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{V_CUSTO_ALIMENTAR}.add($V{V_CUSTO_OPERACIONAL}).add($V{V_CUSTO_SANITARIO})]]></variableExpression>
+	</variable>
+	<variable name="V_CUSTO_ARROBA" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{V_ARROBAS}.signum() == 0 ? null : $V{V_CUSTO_PROD}.divide($V{V_ARROBAS}, 2, java.math.RoundingMode.HALF_UP)]]></variableExpression>
+	</variable>
+	<variable name="V_CUSTO_CAB" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{V_QTDE}.longValue() == 0L ? null : $V{V_CUSTO_TOTAL}.divide(java.math.BigDecimal.valueOf($V{V_QTDE}.longValue()), 2, java.math.RoundingMode.HALF_UP)]]></variableExpression>
+	</variable>
+	<title>
+		<band height="66" splitType="Stretch">
+			<rectangle>
+				<reportElement mode="Opaque" x="0" y="0" width="4" height="40" backcolor="#2E7D5B" uuid="f6e16658-de33-4bf9-81b9-50276e3917b0"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" isUsingCache="false" onErrorType="Blank">
+				<reportElement x="10" y="2" width="36" height="36" uuid="bf7b7d74-d459-463e-85ae-ed5ddb267e19"/>
+				<imageExpression><![CDATA[$F{logo_marca}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Titulo" x="52" y="2" width="470" height="20" uuid="ea724ee5-4571-4d3b-9b57-5b4ee9ffd0e0"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Engorda · Lotes Baixados por Período]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Subtitulo" x="52" y="22" width="470" height="14" uuid="ac6d847f-134e-4f82-9ea2-c8c9127d26d8"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Desempenho zootécnico e custos dos lotes com saída no período]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="Emissao" x="532" y="2" width="280" height="12" uuid="ece58a85-a754-4b02-b063-2c15b41f8747"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Emitido em " + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format($P{P_DATA_EMISSAO})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Emissao" x="532" y="14" width="280" height="12" uuid="24e0639e-ed36-42cd-bfcd-9274f8dfa5c3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Usuário: " + $P{P_USUARIO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Emissao" x="532" y="26" width="280" height="12" uuid="4ebaf54c-4d7b-4019-936a-52fa77dd7c6a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{P_SISTEMA}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="FiltroBox" x="0" y="46" width="812" height="16" uuid="f204e464-2141-4e6b-be63-52bbf58b925d"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Período de saída: " + $P{P_FMT_DATA}.format($P{P_DATA_INICIAL}) + " a " + $P{P_FMT_DATA}.format($P{P_DATA_FINAL})
++ ($F{nome_empresa} == null ? "" : "     |     Empresa: " + $F{nome_empresa})
++ ($F{nome_campanha} == null ? "" : "     |     Safra: " + $F{nome_campanha})
++ ($F{nome_estrategia} == null ? "" : "     |     Estratégia: " + $F{nome_estrategia})
++ ($F{nome_proprietario} == null ? "" : "     |     Proprietário: " + $F{nome_proprietario})]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="36" splitType="Prevent">
+			<staticText>
+				<reportElement style="GrupoCab" x="0" y="0" width="194" height="12" uuid="96bbea7d-5b79-443e-9470-3a2cd964e627"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[IDENTIFICAÇÃO DO LOTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="GrupoCab" x="194" y="0" width="104" height="12" uuid="c0fe5a4e-06c2-404a-94b3-bfe647e7b364"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[PERÍODO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="GrupoCab" x="298" y="0" width="198" height="12" uuid="72289946-ea43-49d0-8679-4e772ba52b34"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[DESEMPENHO ZOOTÉCNICO (MÉDIAS POR CABEÇA)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="GrupoCab" x="496" y="0" width="316" height="12" uuid="0fe6ceb3-0873-46d3-b5b4-67a368450cec"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[CUSTOS (R$)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColuna" x="0" y="12" width="26" height="22" uuid="3f6a90cf-14b4-49f2-b839-ac0de8ef3f2f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Id.
+Lote]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColuna" x="26" y="12" width="64" height="22" uuid="efc6b8aa-b20d-428c-ae5b-fb580a70d01f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Lote]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColuna" x="90" y="12" width="34" height="22" uuid="f4ed28d3-4f4d-48ce-8c09-47107016b4cd"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Área]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColuna" x="124" y="12" width="70" height="22" uuid="e2ebc3dd-6fb6-4dba-ac16-2d1814395afc"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Fórmulas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColuna" x="194" y="12" width="40" height="22" uuid="f1640cf6-bd8a-4d3b-806e-bb50272a1978"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Entrada
+(média)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColuna" x="234" y="12" width="40" height="22" uuid="11353665-d402-414b-99d6-8cd58bfe1410"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Saída]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColuna" x="274" y="12" width="24" height="22" uuid="da8931c9-4b2d-4278-a80d-3c8537c7a8a4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Dias]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColuna" x="298" y="12" width="26" height="22" uuid="94432195-508d-40c3-9d2a-6d10213521f9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Cab.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColuna" x="324" y="12" width="36" height="22" uuid="cf31c2b7-af69-4e8e-982a-9f155ff1fa7c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Peso Ent.
+(kg)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColuna" x="360" y="12" width="36" height="22" uuid="80d03112-9f23-4ba5-b12a-e0d8f4657772"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Peso Saída
+(kg)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColuna" x="396" y="12" width="34" height="22" uuid="a669151a-a4da-4976-945c-60fe6e001ff5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Ganho
+(kg)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColuna" x="430" y="12" width="30" height="22" uuid="5e6b2cf2-224f-4a60-ada1-b48965527197"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[GMD
+(kg/d)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColuna" x="460" y="12" width="36" height="22" uuid="37af393c-6b67-4057-ad15-d7f192ce4131"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[@ Prod.
+(total)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColuna" x="496" y="12" width="50" height="22" uuid="b26d0247-843d-4633-9485-bdc504161b0c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Compra
+Animais]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColuna" x="546" y="12" width="46" height="22" uuid="e67e13c7-8c47-45f8-adf0-504b2f135a15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Alimentar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColuna" x="592" y="12" width="44" height="22" uuid="196ee6e1-ba08-40aa-81f2-e72e64b6740c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Operacional]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColuna" x="636" y="12" width="40" height="22" uuid="10339965-670f-42d5-bd35-57ce2464c33e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Sanitário]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColuna" x="676" y="12" width="52" height="22" uuid="36eab36e-fff5-4b4c-baaa-bcdb7406cd1d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Custo
+Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColuna" x="728" y="12" width="44" height="22" uuid="ad8370ee-e7ba-4738-96a9-882862a7f943"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Custo por
+Cabeça]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CabColunaDest" x="772" y="12" width="40" height="22" uuid="8bbd4876-9dd3-4fd3-9f87-ec27f61eeb18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Custo @
+Produzida]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement style="CelulaForte" stretchType="RelativeToTallestObject" x="0" y="0" width="26" height="16" uuid="669997a7-4216-4ed0-a8b6-e5d37bf43c07"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{id_aparte_aux}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="CelulaForte" stretchType="RelativeToTallestObject" x="26" y="0" width="64" height="16" uuid="d264fa28-cc7f-4a46-9f1c-12920325e9e2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Celula" stretchType="RelativeToTallestObject" x="90" y="0" width="34" height="16" uuid="8d0638b6-8208-4cff-8ecd-23232d55e9d7"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{desc_areas}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Celula" stretchType="RelativeToTallestObject" x="124" y="0" width="70" height="16" uuid="5c512465-68e0-44b7-80a6-678b53aa327c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{desc_formulas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yy" isBlankWhenNull="true">
+				<reportElement style="Celula" stretchType="RelativeToTallestObject" x="194" y="0" width="40" height="16" uuid="6510e779-6876-4ac2-9a72-fe5ca4916e0c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{data_entrada}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yy" isBlankWhenNull="true">
+				<reportElement style="Celula" stretchType="RelativeToTallestObject" x="234" y="0" width="40" height="16" uuid="b23afd83-d50b-4205-a61a-a9153ab5201d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{data_saida}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="Celula" stretchType="RelativeToTallestObject" x="274" y="0" width="24" height="16" uuid="66aa5cfc-5af9-4b45-b488-ee37d65cd756"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{qtde_dias}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="CelulaForte" stretchType="RelativeToTallestObject" x="298" y="0" width="26" height="16" uuid="d7f69065-022a-43dd-aed4-12df36cf3355"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{qtde_animais}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Celula" stretchType="RelativeToTallestObject" x="324" y="0" width="36" height="16" uuid="e84194d6-ce6a-4627-9810-f42ad15bd54b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{peso_entrada}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Celula" stretchType="RelativeToTallestObject" x="360" y="0" width="36" height="16" uuid="8aade147-ef6f-4706-b71d-6bd4201a2f64"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{peso_saida}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="CelulaGanho" stretchType="RelativeToTallestObject" x="396" y="0" width="34" height="16" uuid="3113143c-2410-45e3-8ad5-bd864e3dae79"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ganho_peso}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
+				<reportElement style="CelulaForte" stretchType="RelativeToTallestObject" x="430" y="0" width="30" height="16" uuid="c3a95f45-8023-4c31-9b93-57d8dccb55a6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{gmd}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Celula" stretchType="RelativeToTallestObject" x="460" y="0" width="36" height="16" uuid="f36d892b-632d-488a-8263-c1b0082975a3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{arrobas_produzidas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Celula" stretchType="RelativeToTallestObject" x="496" y="0" width="50" height="16" uuid="2386ad1e-e4d8-4d07-98ab-f66b8a6abcfb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{valor_compra}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Celula" stretchType="RelativeToTallestObject" x="546" y="0" width="46" height="16" uuid="260c5f14-4e7e-4a2b-b7a6-314267e11a5b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{custo_alimentar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Celula" stretchType="RelativeToTallestObject" x="592" y="0" width="44" height="16" uuid="9cdba4b9-ecc2-45b7-86c5-10a200099642"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{custo_operacional}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Celula" stretchType="RelativeToTallestObject" x="636" y="0" width="40" height="16" uuid="466a24a6-624d-40cb-bd1f-e52fcdc4f3cb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{custo_sanitario}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="CelulaForte" stretchType="RelativeToTallestObject" x="676" y="0" width="52" height="16" uuid="d255076a-57b4-4e2a-afe1-359265109d6b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{custo_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Celula" stretchType="RelativeToTallestObject" x="728" y="0" width="44" height="16" uuid="9b25226b-f0d5-4eb7-947f-9ae50dbb38f3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{custo_cabeca}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="CelulaDest" stretchType="RelativeToTallestObject" x="772" y="0" width="40" height="16" uuid="46a65ca0-0bfd-4ec6-83bc-61c5320bab0f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{custo_arroba}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="3" width="812" height="1" forecolor="#2E7D5B" uuid="93da5c01-f820-4cda-a128-a81e065ed4cd"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Rodape" x="0" y="7" width="590" height="10" uuid="b84df820-2840-47dc-ae78-13d73d3b92fb"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{P_SISTEMA} + "  ·  @ produzida = ganho de peso vivo ÷ 30 (rendimento de 50%)  ·  custo da @ = alimentar + operacional + sanitário"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Rodape" x="600" y="7" width="170" height="10" uuid="9a0d0f66-311d-4e07-bed1-7d37541c6112"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Rodape" x="770" y="7" width="42" height="10" uuid="cad8661c-0986-4144-b5c8-ceda7ff9d365"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="225" splitType="Prevent">
+			<textField>
+				<reportElement style="Total" x="0" y="0" width="274" height="16" uuid="94d5bb02-99fd-412c-bfed-db52ead04491"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["TOTAL GERAL  ·  " + $V{REPORT_COUNT} + " lote" + ($V{REPORT_COUNT}.intValue() == 1 ? "" : "s") + "  (pesos, dias e GMD ponderados por cabeça)"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="Total" x="274" y="0" width="24" height="16" uuid="6ecb0e21-f0f5-4ebf-bcdb-0353e14e5144"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{V_DIAS_MED}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement style="Total" x="298" y="0" width="26" height="16" uuid="011233e7-e3cc-41a2-8902-993653bb5b9a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{V_QTDE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Total" x="324" y="0" width="36" height="16" uuid="ec6558c0-7fd4-4352-baf4-a67c7810ec1a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{V_PE_MED}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Total" x="360" y="0" width="36" height="16" uuid="1d452d2b-d511-419d-b4c1-980bb242eaac"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{V_PS_MED}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Total" x="396" y="0" width="34" height="16" uuid="cb3bd3f5-a910-4380-b165-2dfdad85e126"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{V_GANHO_MED}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
+				<reportElement style="Total" x="430" y="0" width="30" height="16" uuid="7ff3d96f-bb78-4a00-85a1-8a3df7c99bc9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{V_GMD_MED}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement style="Total" x="460" y="0" width="36" height="16" uuid="fd0e77d2-e16e-4c82-b9c5-72e6f32c1de3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{V_ARROBAS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement style="Total" x="496" y="0" width="50" height="16" uuid="a69480f2-e8b2-4a18-9174-b0c89a30fb73"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{V_VALOR_COMPRA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement style="Total" x="546" y="0" width="46" height="16" uuid="e0b2ce01-1e0d-4d04-ac7a-f38647f906f0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{V_CUSTO_ALIMENTAR}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement style="Total" x="592" y="0" width="44" height="16" uuid="1db10d37-d1d4-4980-ab78-6348d7329cf3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{V_CUSTO_OPERACIONAL}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement style="Total" x="636" y="0" width="40" height="16" uuid="6eaefca3-4a1e-4b94-8c7d-1b01e5f0f186"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{V_CUSTO_SANITARIO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement style="Total" x="676" y="0" width="52" height="16" uuid="e1d63f59-4cad-470f-9489-7e662cab922a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{V_CUSTO_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Total" x="728" y="0" width="44" height="16" uuid="1e5f5e96-695b-440d-800c-3d31ef88ef59"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{V_CUSTO_CAB}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="TotalDest" x="772" y="0" width="40" height="16" uuid="bb0f42f7-8108-48b9-9d4e-aef8dc93092f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{V_CUSTO_ARROBA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="CardLabel" x="0" y="26" width="132" height="12" uuid="186ab5ab-8c87-46cb-befe-9220a7e6ceaf"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[LOTES BAIXADOS]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement style="CardValor" x="0" y="38" width="132" height="18" uuid="1436c09c-ff7f-4748-92a6-e607b1a7ca40"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CardSub" x="0" y="56" width="132" height="12" uuid="3f2caa60-d068-4437-b888-eb9896daf55f"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Permanência média: " + ($V{V_DIAS_MED} == null ? "-" : $P{P_FMT_INT}.format($V{V_DIAS_MED})) + " dias"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="CardLabel" x="136" y="26" width="132" height="12" uuid="e36de0de-d015-4491-a421-17bf1f2f45a9"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[CABEÇAS ABATIDAS / VENDIDAS]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement style="CardValor" x="136" y="38" width="132" height="18" uuid="7773b781-4841-45a6-a130-45da36aab69b"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{V_QTDE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CardSub" x="136" y="56" width="132" height="12" uuid="c87453cb-908f-4171-9344-380c485f01a7"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Peso médio: " + ($V{V_PE_MED} == null ? "-" : $P{P_FMT_DEC}.format($V{V_PE_MED})) + "  a  " + ($V{V_PS_MED} == null ? "-" : $P{P_FMT_DEC}.format($V{V_PS_MED})) + " kg"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="CardLabel" x="272" y="26" width="132" height="12" uuid="08510cac-0367-431b-9492-098315b46620"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[ARROBAS PRODUZIDAS]]></text>
+			</staticText>
+			<textField pattern="#,##0.00 &apos;@&apos;">
+				<reportElement style="CardValor" x="272" y="38" width="132" height="18" uuid="78672a58-7ea4-4e1b-a012-1c81ab1bd0cf"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{V_ARROBAS}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CardSub" x="272" y="56" width="132" height="12" uuid="7897f18b-e1be-4272-b387-8b71addefbad"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Ganho médio: " + ($V{V_GANHO_MED} == null ? "-" : $P{P_FMT_DEC}.format($V{V_GANHO_MED})) + " kg por cabeça"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="CardLabel" x="408" y="26" width="132" height="12" uuid="855958f4-5642-4b61-803f-5b3d1b0675a9"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[GMD MÉDIO PONDERADO]]></text>
+			</staticText>
+			<textField pattern="#,##0.000 &apos;kg/dia&apos;" isBlankWhenNull="true">
+				<reportElement style="CardValor" x="408" y="38" width="132" height="18" uuid="f0fa196b-5284-42c9-9f27-dc6c377647c1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{V_GMD_MED}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="CardSub" x="408" y="56" width="132" height="12" uuid="3313fc6d-f2b0-4b63-bdfc-dc1e5b8fff62"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Ganho total ÷ dias totais de cocho]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CardLabelDest" x="544" y="26" width="132" height="12" uuid="d3f1b7cd-07a0-4c5a-8dd4-629b2a870f04"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[CUSTO DA @ PRODUZIDA]]></text>
+			</staticText>
+			<textField pattern="&apos;R$ &apos;#,##0.00" isBlankWhenNull="true">
+				<reportElement style="CardValorDest" x="544" y="38" width="132" height="18" uuid="03fc324f-0391-4f72-8c85-464b1961f3b0"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{V_CUSTO_ARROBA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CardSubDest" x="544" y="56" width="132" height="12" uuid="e87c8f41-a9a1-461d-a12b-c40f2cb1b068"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Custo de produção: R$ " + $P{P_FMT_DEC}.format($V{V_CUSTO_PROD})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="CardLabel" x="680" y="26" width="132" height="12" uuid="d93ef66c-9284-44d1-99be-5dd6c469c2d2"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[CUSTO TOTAL (COM COMPRA)]]></text>
+			</staticText>
+			<textField pattern="&apos;R$ &apos;#,##0.00">
+				<reportElement style="CardValor" x="680" y="38" width="132" height="18" uuid="20b2fd5f-9e7c-465a-af1a-faeee5df55fc"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{V_CUSTO_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CardSub" x="680" y="56" width="132" height="12" uuid="8e26559b-423a-4ca0-855b-450bb0e0bb97"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["R$ " + ($V{V_CUSTO_CAB} == null ? "-" : $P{P_FMT_DEC}.format($V{V_CUSTO_CAB})) + " por cabeça"]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="84" width="812" height="141" uuid="657b6cfb-e52a-4a9e-b811-6e864990b936"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["EngordaLotesBaixadosPorPeriodosubreport.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+	<noData>
+		<band height="60">
+			<staticText>
+				<reportElement style="FiltroBox" x="0" y="14" width="812" height="32" uuid="f3a0cb04-0064-4758-b33b-a4155c15913f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nenhum lote baixado foi encontrado para os filtros informados.]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>
