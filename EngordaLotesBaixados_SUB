@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EngordaLotesBaixadosPorPeriodoSub00021" pageWidth="812" pageHeight="108" whenNoDataType="AllSectionsNoDetail" columnWidth="812" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="30af18d1-02a4-41a0-82d1-07036137b189">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="FazendaGT"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<style name="Base" isDefault="true" forecolor="#2B2B2B" fontName="SansSerif" fontSize="7"/>
+	<style name="Secao" mode="Opaque" forecolor="#1F4E3D" backcolor="#FFFFFF" fontName="SansSerif" fontSize="7" isBold="true">
+		<box leftPadding="7">
+			<leftPen lineWidth="3.0" lineColor="#1F4E3D"/>
+			<bottomPen lineWidth="0.75" lineColor="#2E7D5B"/>
+		</box>
+	</style>
+	<style name="IndLabel" mode="Opaque" forecolor="#5F6F67" backcolor="#F3F8F5" fontName="SansSerif" fontSize="5.5" isBold="true">
+		<box topPadding="2" leftPadding="2" rightPadding="2">
+			<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="IndValor" mode="Opaque" forecolor="#1F4E3D" backcolor="#F3F8F5" fontName="SansSerif" fontSize="9" isBold="true">
+		<box bottomPadding="2">
+			<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<bottomPen lineWidth="1.5" lineColor="#2E7D5B"/>
+			<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="IndLabelDest" mode="Opaque" forecolor="#8A5A00" backcolor="#FFF3DC" fontName="SansSerif" fontSize="5.5" isBold="true">
+		<box topPadding="2" leftPadding="2" rightPadding="2">
+			<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="IndValorDest" mode="Opaque" forecolor="#8A5A00" backcolor="#FFF3DC" fontName="SansSerif" fontSize="9" isBold="true">
+		<box bottomPadding="2">
+			<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<bottomPen lineWidth="1.5" lineColor="#C98A1B"/>
+			<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<parameter name="P_EMPRESA" class="java.lang.Integer"/>
+	<parameter name="P_CAMPANHA" class="java.lang.Integer"/>
+	<parameter name="P_ESTRATEGIA" class="java.lang.Integer"/>
+	<parameter name="P_OPERACAO" class="java.lang.Integer"/>
+	<parameter name="P_DATA_INICIAL" class="java.util.Date"/>
+	<parameter name="P_DATA_FINAL" class="java.util.Date"/>
+	<parameter name="P_PROPRIETARIO" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT
+    ROUND(r.gmd, 2) AS gmd,
+    ROUND(r.gmc, 2) AS gmc,
+    ROUND(r.arroba_por_animal, 2) AS arroba_por_animal,
+    ROUND(r.rend_frigorifico, 2) AS rend_frigorifico,
+    ROUND(r.rend_ganho, 2) AS rend_ganho,
+    ROUND(r.kg_mn_animal_dia, 2) AS kg_mn_animal_dia,
+    ROUND(r.kg_ms_animal_dia, 2) AS kg_ms_animal_dia,
+    ROUND(r.consumo_pvm, 2) AS consumo_pvm,
+    ROUND(r.conversao_alimentar, 2) AS conversao_alimentar,
+    ROUND(r.eficiencia_biologica, 2) AS eficiencia_biologica,
+    ROUND(r.custo_diaria_alimentar, 2) AS custo_diaria_alimentar,
+    ROUND(r.custo_diaria_operacional, 2) AS custo_diaria_operacional,
+    ROUND(r.custo_diaria_total, 2) AS custo_diaria_total,
+    ROUND(r.custo_arroba_prod_alimentar, 2) AS custo_arroba_prod_alimentar,
+    ROUND(r.custo_arroba_prod_operacional, 2) AS custo_arroba_prod_operacional,
+    ROUND(r.custo_arroba_total, 2) AS custo_arroba_total,
+    -- novos indicadores
+    ROUND(s.custo_alimentar * 100
+          / NULLIF(s.custo_alimentar + s.custo_operacional + s.custo_sanitario, 0), 2) AS part_alimentar,
+    ROUND((s.custo_animal + s.custo_alimentar + s.custo_operacional + s.custo_sanitario)
+          / NULLIF(s.qtde_animais, 0), 2) AS custo_cabeca
+FROM (
+    SELECT
+        ROUND(AVG(c.peso_entrada)::numeric, 2) AS peso_entrada,
+        ROUND(AVG(c.peso_saida)::numeric, 2) AS peso_saida,
+        0 AS peso_carcaca,
+        0 AS rend_carcaca,
+        AVG(c.qtde_dias)::integer AS qtde_dias,
+        COUNT(c.id_animal)::integer AS qtde_animais,
+        ROUND(AVG(c.qtde_mn)::numeric, 2) AS qtde_mn,
+        ROUND(AVG(c.qtde_ms)::numeric, 2) AS qtde_ms,
+        0 AS valor_venda,
+        ROUND(COALESCE(SUM(c.custo_animal), 0)::numeric, 2) AS custo_animal,
+        ROUND(COALESCE(SUM(c.custo_alimentar), 0)::numeric, 2) AS custo_alimentar,
+        ROUND(COALESCE(SUM(c.custo_operacional), 0)::numeric, 2) AS custo_operacional,
+        ROUND(COALESCE(SUM(c.custo_sanitario), 0)::numeric, 2) AS custo_sanitario,
+        ROUND(AVG(c.valor_arroba_entrada)::numeric, 2) AS valor_arroba_entrada,
+        0 AS valor_arroba_venda,
+        ROUND(AVG(k.custo_diaria_operacional)::numeric, 2) AS custo_diaria_operacional,
+        0 AS valor_imposto_abate
+    FROM vw_xgp_engorda_lote_bx c
+    JOIN xgp_animal d
+      ON d.id_animal = c.id_animal
+    LEFT JOIN xgp_aparte e
+      ON e.id_aparte = c.id_aparte
+    LEFT JOIN xgp_campanha k
+      ON k.id_campanha = e.id_campanha
+    WHERE c.data_saida >= CAST($P{P_DATA_INICIAL} AS date)
+      AND c.data_saida <  CAST($P{P_DATA_FINAL} AS date) + 1
+      AND (CAST($P{P_EMPRESA} AS integer)      IS NULL OR d.id_empresa      = $P{P_EMPRESA})
+      AND (CAST($P{P_CAMPANHA} AS integer)     IS NULL OR e.id_campanha     = $P{P_CAMPANHA})
+      AND (CAST($P{P_ESTRATEGIA} AS integer)   IS NULL OR e.id_estrategia   = $P{P_ESTRATEGIA})
+      AND (CAST($P{P_PROPRIETARIO} AS integer) IS NULL OR d.id_proprietario = $P{P_PROPRIETARIO})
+) s
+LEFT JOIN LATERAL engorda.calcula_resultado(
+    s.peso_entrada,
+    s.peso_saida,
+    s.peso_carcaca,
+    s.rend_carcaca,
+    s.qtde_dias,
+    s.qtde_animais,
+    s.qtde_mn,
+    s.qtde_ms,
+    s.valor_venda,
+    s.custo_animal,
+    s.custo_alimentar,
+    s.custo_operacional,
+    s.custo_sanitario,
+    s.valor_arroba_entrada,
+    s.valor_arroba_venda,
+    s.custo_diaria_operacional,
+    s.valor_imposto_abate
+) r ON TRUE
+WHERE s.qtde_animais > 0]]>
+	</queryString>
+	<field name="gmd" class="java.math.BigDecimal"/>
+	<field name="gmc" class="java.math.BigDecimal"/>
+	<field name="arroba_por_animal" class="java.math.BigDecimal"/>
+	<field name="rend_frigorifico" class="java.math.BigDecimal"/>
+	<field name="rend_ganho" class="java.math.BigDecimal"/>
+	<field name="kg_mn_animal_dia" class="java.math.BigDecimal"/>
+	<field name="kg_ms_animal_dia" class="java.math.BigDecimal"/>
+	<field name="consumo_pvm" class="java.math.BigDecimal"/>
+	<field name="conversao_alimentar" class="java.math.BigDecimal"/>
+	<field name="eficiencia_biologica" class="java.math.BigDecimal"/>
+	<field name="custo_diaria_alimentar" class="java.math.BigDecimal"/>
+	<field name="custo_diaria_operacional" class="java.math.BigDecimal"/>
+	<field name="custo_diaria_total" class="java.math.BigDecimal"/>
+	<field name="custo_arroba_prod_alimentar" class="java.math.BigDecimal"/>
+	<field name="custo_arroba_prod_operacional" class="java.math.BigDecimal"/>
+	<field name="custo_arroba_total" class="java.math.BigDecimal"/>
+	<field name="part_alimentar" class="java.math.BigDecimal"/>
+	<field name="custo_cabeca" class="java.math.BigDecimal"/>
+	<detail>
+		<band height="108" splitType="Prevent">
+			<staticText>
+				<reportElement style="Secao" x="0" y="0" width="812" height="14" uuid="95d353e8-1cb7-41b0-94b7-946bd5e3fc57"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[INDICADORES ZOOTÉCNICOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="512" y="0" width="300" height="14" forecolor="#6B7B73" uuid="94f1bc6d-b1db-488d-afa3-f2ee7b3da2d3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="5.5"/>
+				</textElement>
+				<text><![CDATA[Consolidado de todos os lotes baixados no período]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="IndLabelDest" x="0" y="16" width="81" height="16" uuid="484b4a42-456e-40ec-9c3e-a2016af31c1d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[GMD (kg/dia)]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="IndValorDest" x="0" y="32" width="81" height="20" uuid="48d6ca77-2f55-4023-8524-4dacf1f044c9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{gmd}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="IndLabel" x="81" y="16" width="81" height="16" uuid="3c8b3cda-69f5-4985-80b4-33fd5684ff9c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[GMC (kg/dia)]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="IndValor" x="81" y="32" width="81" height="20" uuid="455720a7-69af-42af-970f-6d898b816bc7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{gmc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="IndLabel" x="162" y="16" width="81" height="16" uuid="cd38b092-4c91-4f23-95c2-2ce6740ede7a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[ARROBAS POR ANIMAL]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="IndValor" x="162" y="32" width="81" height="20" uuid="82f9efbb-3b92-4312-966f-cf90f6dcbe21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{arroba_por_animal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="IndLabelDest" x="243" y="16" width="81" height="16" uuid="8fe3fb2e-3ed0-42d3-a496-95780ff84f61"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[RENDIMENTO FRIGORÍFICO]]></text>
+			</staticText>
+			<textField pattern="#,##0.00&apos;%&apos;" isBlankWhenNull="true">
+				<reportElement style="IndValorDest" x="243" y="32" width="81" height="20" uuid="abc348b9-f135-439f-b926-97ea3a5fcf20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{rend_frigorifico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="IndLabel" x="324" y="16" width="81" height="16" uuid="e478ef30-f87f-406f-a381-5d0d34c82d9a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[RENDIMENTO DE GANHO]]></text>
+			</staticText>
+			<textField pattern="#,##0.00&apos;%&apos;" isBlankWhenNull="true">
+				<reportElement style="IndValor" x="324" y="32" width="81" height="20" uuid="9c95a161-7413-4234-87a2-54cee25e682e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{rend_ganho}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="IndLabel" x="405" y="16" width="81" height="16" uuid="34d19693-9cb0-4b3c-ab53-47777e7a7a31"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[KG MN / ANIMAL / DIA]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="IndValor" x="405" y="32" width="81" height="20" uuid="720c991c-9813-4337-8e79-de983bb0e055"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{kg_mn_animal_dia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="IndLabel" x="486" y="16" width="81" height="16" uuid="e27ce8d4-538d-4a46-b355-a56a447e351c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[KG MS / ANIMAL / DIA]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="IndValor" x="486" y="32" width="81" height="20" uuid="cedd72f5-b4d4-40f0-b33e-6eba96e22d41"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{kg_ms_animal_dia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="IndLabel" x="567" y="16" width="81" height="16" uuid="7b88a056-f907-4bdf-bdcc-a8189c94a188"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[CONSUMO SOBRE PVM]]></text>
+			</staticText>
+			<textField pattern="#,##0.00&apos;%&apos;" isBlankWhenNull="true">
+				<reportElement style="IndValor" x="567" y="32" width="81" height="20" uuid="082f6877-e7c2-4b99-9a5d-2661c36eb8ba"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{consumo_pvm}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="IndLabel" x="648" y="16" width="82" height="16" uuid="d40d8ba3-c0e5-4d48-b01e-bbed09fa1a3a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[CONVERSÃO ALIMENTAR]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="IndValor" x="648" y="32" width="82" height="20" uuid="3c211af2-2aed-4ef2-b6cf-a8963f6da347"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{conversao_alimentar}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="IndLabelDest" x="730" y="16" width="82" height="16" uuid="94afa467-820a-41f6-8ee8-753b0b53932b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[EFICIÊNCIA BIOLÓGICA]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="IndValorDest" x="730" y="32" width="82" height="20" uuid="493f02d4-0e9e-4720-8fc0-4c4865737d62"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{eficiencia_biologica}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Secao" x="0" y="58" width="812" height="14" uuid="ddf098d4-7d00-4afd-ba51-5cb6eebbb9f5"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[ANÁLISE FINANCEIRA PRODUTIVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="512" y="58" width="300" height="14" forecolor="#6B7B73" uuid="2bd2158d-c998-40a8-8756-bf25ad1e8c9f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="5.5"/>
+				</textElement>
+				<text><![CDATA[Consolidado de todos os lotes baixados no período]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="IndLabel" x="0" y="74" width="101" height="16" uuid="7579b3ed-88e4-46b1-b647-cbf3e15f5299"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[DIÁRIA ALIMENTAR]]></text>
+			</staticText>
+			<textField pattern="&apos;R$ &apos;#,##0.00" isBlankWhenNull="true">
+				<reportElement style="IndValor" x="0" y="90" width="101" height="18" uuid="afaad7e4-7273-4907-a35c-eeb9822e9c35"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{custo_diaria_alimentar}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="IndLabel" x="101" y="74" width="101" height="16" uuid="746ec4fb-77a1-43bb-af1f-6708fd81943a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[DIÁRIA OPERACIONAL]]></text>
+			</staticText>
+			<textField pattern="&apos;R$ &apos;#,##0.00" isBlankWhenNull="true">
+				<reportElement style="IndValor" x="101" y="90" width="101" height="18" uuid="e1f3946b-f3f8-4a11-b7eb-eee5a2976b42"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{custo_diaria_operacional}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="IndLabelDest" x="202" y="74" width="101" height="16" uuid="4c948aed-7e6f-489e-8a0b-161108277e91"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[DIÁRIA TOTAL]]></text>
+			</staticText>
+			<textField pattern="&apos;R$ &apos;#,##0.00" isBlankWhenNull="true">
+				<reportElement style="IndValorDest" x="202" y="90" width="101" height="18" uuid="1b957fff-49d4-4d58-9938-24bd5340aa77"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{custo_diaria_total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="IndLabel" x="303" y="74" width="101" height="16" uuid="df88fd13-b710-4ce3-a9ec-a22a736f7af0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[@ PRODUZIDA ALIMENTAR]]></text>
+			</staticText>
+			<textField pattern="&apos;R$ &apos;#,##0.00" isBlankWhenNull="true">
+				<reportElement style="IndValor" x="303" y="90" width="101" height="18" uuid="b4423804-62da-4e06-89ab-1aba6b25c2c3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{custo_arroba_prod_alimentar}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="IndLabel" x="404" y="74" width="101" height="16" uuid="7b09e286-b438-44ad-8189-a34a00b915ba"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[@ PRODUZIDA OPERACIONAL]]></text>
+			</staticText>
+			<textField pattern="&apos;R$ &apos;#,##0.00" isBlankWhenNull="true">
+				<reportElement style="IndValor" x="404" y="90" width="101" height="18" uuid="bab47c53-c78a-4a2a-b639-f6614eb755ce"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{custo_arroba_prod_operacional}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="IndLabelDest" x="505" y="74" width="101" height="16" uuid="59d770f7-089e-43be-be08-03878b04a025"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[@ PRODUZIDA TOTAL]]></text>
+			</staticText>
+			<textField pattern="&apos;R$ &apos;#,##0.00" isBlankWhenNull="true">
+				<reportElement style="IndValorDest" x="505" y="90" width="101" height="18" uuid="e9adc971-8176-42aa-ab90-a1f9c077f742"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{custo_arroba_total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="IndLabel" x="606" y="74" width="101" height="16" uuid="dfc73e04-5a96-4c8e-b2f4-c7f378c4fadb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[PARTICIPAÇÃO ALIMENTAR]]></text>
+			</staticText>
+			<textField pattern="#,##0.00&apos;%&apos;" isBlankWhenNull="true">
+				<reportElement style="IndValor" x="606" y="90" width="101" height="18" uuid="cfa376ed-decb-484a-9de2-3bf81046e144"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{part_alimentar}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="IndLabel" x="707" y="74" width="105" height="16" uuid="09fa1022-2bf1-4bfd-be72-2945f9981cdd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[CUSTO TOTAL POR CABEÇA]]></text>
+			</staticText>
+			<textField pattern="&apos;R$ &apos;#,##0.00" isBlankWhenNull="true">
+				<reportElement style="IndValor" x="707" y="90" width="105" height="18" uuid="de7d1a6e-8289-4b1a-b38e-3a45ace28cd6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{custo_cabeca}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
