@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="consumo_custo_ingredientes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8566abca-759c-446a-8b81-c10d93d25b43">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="FazendaGT"/>
+	<parameter name="P_DATA_INICIO" class="java.util.Date">
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_DATA_FIM" class="java.util.Date">
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_ID_EMPRESA" class="java.lang.Object">
+		<defaultValueExpression><![CDATA[$P{REPORT_PARAMETERS_MAP} == null ? null : ($P{REPORT_PARAMETERS_MAP}.get("ID_EMPRESA") != null ? $P{REPORT_PARAMETERS_MAP}.get("ID_EMPRESA") : $P{REPORT_PARAMETERS_MAP}.get("id_empresa"))]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_ID_FORMULA" class="java.lang.Object">
+		<defaultValueExpression><![CDATA[$P{REPORT_PARAMETERS_MAP} == null ? null : ($P{REPORT_PARAMETERS_MAP}.get("ID_FORMULA") != null ? $P{REPORT_PARAMETERS_MAP}.get("ID_FORMULA") : $P{REPORT_PARAMETERS_MAP}.get("id_formula"))]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_ID_EMPRESA_INT" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[(
+    $P{P_ID_EMPRESA} == null
+        ? null
+        : (
+            $P{P_ID_EMPRESA} instanceof Number
+                ? (
+                    ((Number)$P{P_ID_EMPRESA}).intValue() == 0
+                        ? null
+                        : ((Number)$P{P_ID_EMPRESA}).intValue()
+                )
+                : (
+                    $P{P_ID_EMPRESA}.toString().trim().matches("\\d+")
+                        ? (
+                            Integer.parseInt($P{P_ID_EMPRESA}.toString().trim()) == 0
+                                ? null
+                                : Integer.parseInt($P{P_ID_EMPRESA}.toString().trim())
+                        )
+                        : null
+                )
+        )
+)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_ID_FORMULA_INT" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[(
+    $P{P_ID_FORMULA} == null
+        ? null
+        : (
+            $P{P_ID_FORMULA} instanceof Number
+                ? (
+                    ((Number)$P{P_ID_FORMULA}).intValue() == 0
+                        ? null
+                        : ((Number)$P{P_ID_FORMULA}).intValue()
+                )
+                : (
+                    $P{P_ID_FORMULA}.toString().trim().matches("\\d+")
+                        ? (
+                            Integer.parseInt($P{P_ID_FORMULA}.toString().trim()) == 0
+                                ? null
+                                : Integer.parseInt($P{P_ID_FORMULA}.toString().trim())
+                        )
+                        : null
+                )
+        )
+)]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[WITH base AS (
+    SELECT
+        f.id_empresa,
+        COALESCE(e.nome, 'Empresa ' || f.id_empresa)            AS nome_empresa,
+        f.id_formula,
+        fo.descricao                                            AS descr_formula,
+        fi.id_item_ingrediente                                  AS id_item,
+        COALESCE(item.descricao, 'Item ' || fi.id_item_ingrediente) AS nm_ingrediente,
+        COALESCE(fi.qtde_realizado, 0)                          AS qtde,
+        COALESCE(fi.valor_custo, 0)                             AS custo_unit,
+        f.data_fabricacao
+    FROM
+        xgp_fabrica f
+        INNER JOIN xgp_fabrica_item fi ON fi.id_fabrica = f.id_fabrica
+        -- CORRECAO: o JOIN com xgp_ingredientes (composicao ATUAL da formula) foi removido.
+        -- Quando a formula era alterada (ingrediente trocado/removido), as fabricacoes antigas
+        -- que usaram o ingrediente antigo sumiam do relatorio. Agora o ingrediente vem
+        -- direto do item fabricado (xgp_fabrica_item).
+        LEFT JOIN xgp_item item        ON item.id_item = fi.id_item_ingrediente
+        -- CORRECAO: LEFT JOIN para nao perder registros se a formula/empresa nao for encontrada
+        LEFT JOIN xgp_formula fo       ON fo.id_formula = f.id_formula
+        LEFT JOIN empresa e            ON e.id_empresa = f.id_empresa
+    WHERE
+        f.data_fabricacao >= COALESCE(CAST($P{P_DATA_INICIO} AS date), DATE '1900-01-01')
+        AND f.data_fabricacao < COALESCE(CAST($P{P_DATA_FIM} AS date), DATE '2999-12-31') + INTERVAL '1 day'
+        AND (CAST($P{P_ID_FORMULA_INT} AS integer) IS NULL OR f.id_formula = $P{P_ID_FORMULA_INT})
+        AND (CAST($P{P_ID_EMPRESA_INT} AS integer) IS NULL OR f.id_empresa = $P{P_ID_EMPRESA_INT})
+        AND COALESCE(f.status, 'A') <> 'C'
+),
+cab AS (
+    SELECT
+        CAST(COUNT(DISTINCT id_formula) AS integer) AS qt_formula,
+        CAST(COUNT(DISTINCT id_empresa) AS integer) AS qt_empresa,
+        MIN(id_formula)      AS id_formula_uni,
+        MIN(descr_formula)   AS descr_formula_uni,
+        MIN(nome_empresa)    AS nome_empresa_uni,
+        MIN(data_fabricacao) AS dt_ini_real,
+        MAX(data_fabricacao) AS dt_fim_real
+    FROM base
+)
+SELECT
+    b.id_empresa,
+    b.nome_empresa              AS nome,
+    c.descr_formula_uni         AS descricao,
+    c.qt_formula,
+    c.qt_empresa,
+    c.id_formula_uni,
+    c.nome_empresa_uni,
+    c.dt_ini_real,
+    c.dt_fim_real,
+    b.id_item,
+    b.nm_ingrediente,
+    SUM(b.qtde)                 AS qtde_consumida,
+    SUM(b.qtde * b.custo_unit)  AS custo_total
+FROM
+    base b
+    CROSS JOIN cab c
+GROUP BY
+    b.id_empresa,
+    b.nome_empresa,
+    c.descr_formula_uni,
+    c.qt_formula,
+    c.qt_empresa,
+    c.id_formula_uni,
+    c.nome_empresa_uni,
+    c.dt_ini_real,
+    c.dt_fim_real,
+    b.id_item,
+    b.nm_ingrediente
+ORDER BY
+    b.nm_ingrediente]]>
+	</queryString>
+	<field name="id_empresa" class="java.lang.Integer"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="descricao" class="java.lang.String"/>
+	<field name="qt_formula" class="java.lang.Integer"/>
+	<field name="qt_empresa" class="java.lang.Integer"/>
+	<field name="id_formula_uni" class="java.lang.Integer"/>
+	<field name="nome_empresa_uni" class="java.lang.String"/>
+	<field name="dt_ini_real" class="java.util.Date"/>
+	<field name="dt_fim_real" class="java.util.Date"/>
+	<field name="id_item" class="java.lang.Integer"/>
+	<field name="nm_ingrediente" class="java.lang.String"/>
+	<field name="qtde_consumida" class="java.math.BigDecimal"/>
+	<field name="custo_total" class="java.math.BigDecimal"/>
+	<variable name="V_TOTAL_CONSUMO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtde_consumida}]]></variableExpression>
+	</variable>
+	<variable name="V_TOTAL_CUSTO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{custo_total}]]></variableExpression>
+	</variable>
+	<title>
+		<band height="70">
+			<textField>
+				<reportElement x="0" y="0" width="350" height="25" forecolor="#2C3E50" uuid="95af8e7c-ec2d-4c4c-81f4-96de7428bf7c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Consumo e Custo por Ingredientes"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="25" width="350" height="15" forecolor="#555555" uuid="e55da3d8-b228-4396-ac52-9cf6d167ace8"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{qt_empresa} != null && $F{qt_empresa}.intValue() == 1 && $F{nome_empresa_uni} != null)
+   ? $F{nome_empresa_uni}
+   : "Todas as empresas"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="350" y="0" width="205" height="50" forecolor="#7D7D7D" uuid="f18b64f2-0764-4b0f-910f-9aaf7258e777"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial" size="8"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Período: "
++ ( $P{P_DATA_INICIO} != null
+      ? new java.text.SimpleDateFormat("dd/MM/yyyy").format($P{P_DATA_INICIO})
+      : ( $F{dt_ini_real} != null ? new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{dt_ini_real}) : "Toda" ) )
++ " a "
++ ( $P{P_DATA_FIM} != null
+      ? new java.text.SimpleDateFormat("dd/MM/yyyy").format($P{P_DATA_FIM})
+      : ( $F{dt_fim_real} != null ? new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{dt_fim_real}) : "Base" ) )
++ "\nFórmula: "
++ ( ( $F{qt_formula} != null && $F{qt_formula}.intValue() == 1 && $F{id_formula_uni} != null )
+      ? String.valueOf($F{id_formula_uni}) + " - " + ( $F{descricao} == null ? "" : $F{descricao} )
+      : "Todas (" + ( $F{qt_formula} == null ? "0" : String.valueOf($F{qt_formula}) ) + ")" )
++ "\nEmitido em: "
++ new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="55" width="555" height="1" forecolor="#D3D3D3" uuid="76868ab9-d7ab-49c6-807a-b6e855a94a2e"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</line>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="20" forecolor="#EEEEEE" backcolor="#EEEEEE" uuid="af44f300-d488-40aa-8145-bcc9bbe878ab"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="0" width="65" height="20" forecolor="#333333" uuid="ebb8b8bd-46a7-4716-b243-3abd0c711f6e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cód. Item]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="0" width="245" height="20" forecolor="#333333" uuid="0ad45066-b1a7-43b4-b38d-b2bdc723e89d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ingrediente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="315" y="0" width="120" height="20" forecolor="#333333" uuid="d8719abe-8975-4b98-812b-b27a1f16a332"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qtde Consumida (kg)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="0" width="115" height="20" forecolor="#333333" uuid="20d19cbd-c8ab-488a-b09a-2b60b220478f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Custo Total]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="19" width="555" height="1" forecolor="#CCCCCC" uuid="6414c68a-6a1f-490c-ba32-f1d5c562fa89"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<textField isBlankWhenNull="true">
+				<reportElement x="5" y="0" width="65" height="20" forecolor="#333333" uuid="016f5f11-59ca-4715-afad-8c081257ceb7"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_item}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="70" y="0" width="245" height="20" forecolor="#333333" uuid="e709407e-c558-43db-9606-39fc271ea1ab"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nm_ingrediente}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
+				<reportElement x="315" y="0" width="120" height="20" forecolor="#333333" uuid="98f7b059-6835-4f78-9896-694f9643f1df"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtde_consumida}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="435" y="0" width="115" height="20" forecolor="#333333" uuid="777a1ddf-548f-4bb1-9c8d-0da3899565b5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{custo_total}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="19" width="555" height="1" forecolor="#EAEAEA" uuid="cc167be5-fdba-466a-9557-bb860bc36a06"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30">
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" forecolor="#D3D3D3" uuid="731a6449-4f56-48a6-95af-7003b13b979e"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="5" width="200" height="15" forecolor="#7D7D7D" uuid="cfdb28eb-2f72-4881-b525-e8c78219f6c6"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["GESPEC - Gestão Pecuária"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="435" y="5" width="80" height="15" forecolor="#7D7D7D" uuid="0c85d58f-a48f-44f7-b969-69d2121ed45f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="515" y="5" width="40" height="15" forecolor="#7D7D7D" uuid="c2104b48-80cc-4090-9a0f-d8fcccd037e0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="40">
+			<line>
+				<reportElement x="0" y="5" width="555" height="1" forecolor="#2C3E50" uuid="f45a9f02-bde0-45af-ba64-3dc5bdcbce83"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="115" y="10" width="200" height="20" forecolor="#2C3E50" uuid="3eb5705e-fbbb-4644-83c6-289f90f6f334"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL GERAL:]]></text>
+			</staticText>
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
+				<reportElement x="315" y="10" width="120" height="20" forecolor="#2C3E50" uuid="0a9e5962-22f4-45c4-9f8b-14addcec466b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{V_TOTAL_CONSUMO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="435" y="10" width="115" height="20" forecolor="#2C3E50" uuid="e89e0cdd-8a19-4e6d-81d9-0d0b555a1da6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{V_TOTAL_CUSTO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
